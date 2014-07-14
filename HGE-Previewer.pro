@@ -3,10 +3,9 @@ CONFIG += console
 CONFIG -= app_bundle
 CONFIG -= qt
 QMAKE_CXXFLAGS += -std=c++11
-QMAKE_LIBS += -lGLEW -lglfw -lGL -lfreeimage
+QMAKE_LIBS += -lGLEW -lglfw -lGL -lfreeimage -lboost_system
 SOURCES += \
 	hge-camera-unit.cpp \
-	hge-client-shared-memory-connector.cpp \
 	hge-director.cpp \
 	hge-geometry-unit.cpp \
 	hge-main.cpp \
@@ -25,7 +24,9 @@ SOURCES += \
 	hge-texture-util.cpp \
 	hge-vertex-data.cpp \
 	hge-white-shader.cpp \
-	hge-protocol.cpp
+	hge-protocol.cpp \
+	hge-shared-memory-connector.cpp \
+	hge-tcp-connector.cpp
 
 OTHER_FILES += \
 	LICENSE \
@@ -35,8 +36,6 @@ HEADERS += \
 	hge-actor-unit.hpp \
 	hge-application-unit.hpp \
 	hge-camera-unit.hpp \
-	hge-client-connector.hpp \
-	hge-client-shared-memory-connector.hpp \
 	hge-director.hpp \
 	hge-geometry-unit.hpp \
 	hge-math.hpp \
@@ -55,5 +54,8 @@ HEADERS += \
 	hge-texture-util.hpp \
 	hge-vertex-data.hpp \
 	hge-white-shader.hpp \
-	hge-protocol.hpp
+	hge-protocol.hpp \
+	hge-connector.hpp \
+	hge-shared-memory-connector.hpp \
+	hge-tcp-connector.hpp
 

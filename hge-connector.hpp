@@ -8,7 +8,7 @@ namespace hge
 	}
 	namespace utility
 	{
-		class ClientConnector
+		class Connector
 		{
 		public:
 			typedef enum
@@ -20,6 +20,7 @@ namespace hge
 			virtual void terminateConnection() = 0;
 			virtual void setApplication(core::ApplicationUnit *const &application) = 0;
 			virtual core::ApplicationUnit *getApplication() = 0;
+			virtual void sendData(const unsigned int &size, const unsigned char *const &data) = 0;
 		};
 	}
 }
