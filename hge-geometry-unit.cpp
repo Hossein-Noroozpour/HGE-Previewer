@@ -16,18 +16,10 @@ hge::render::GeometryUnit::setMesh(const std::shared_ptr<hge::render::MeshUnit>&
 {
 	mesh = m;
 }
-void hge::render::GeometryUnit::draw()
+void
+hge::render::GeometryUnit::draw()
 {
-#ifdef ANDROID
-	GLuint query_result = 0;
-	glGetQueryObjectuiv(queries[HGEGEOMETRYOCCLUSIONQUERYINDEX], GL_QUERY_RESULT, &query_result);
-	if(query_result == 0)
-	{
-		return;
-	}
-#else
-	glBeginConditionalRender(queries[HGEGEOMETRYOCCLUSIONQUERYINDEX], GL_QUERY_WAIT);
-#endif
+	glBeginConditionalRender(queries[HGEGEOMETRYOCCLUSIONQUERYID], GL_QUERY_WAIT);
 	mesh->bindVBO();
 	shader->use();
 	texture->bind(GL_TEXTURE0);
@@ -35,25 +27,160 @@ void hge::render::GeometryUnit::draw()
 	shader->setModelViewProjectionMatrix(mvp);
 	mesh->bindIBO();
 	mesh->draw();
-#ifdef ANDROID
-#else
-	glEndConditionalRender();
+#ifdef HGEGEOMETRYDEBUGMVPVALUECHECK
+	{
+		auto hexstr = (char *)glm::value_ptr(mvp);
+		HGEPRINTCODELINE
+		std::cout << "Value of mvp is: ";
+		for(int i = 0; i < sizeof(hexstr); i++)
+		{
+			int tmpint = hexstr[i] / 16;
+			if(tmpint < 9)
+			{
+				std::cout << tmpint;
+			}
+			else if(tmpint == 10)
+			{
+				std::cout << "A";
+			}
+			else if(tmpint == 11)
+			{
+				std::cout << "B";
+			}
+			else if(tmpint == 12)
+			{
+				std::cout << "C";
+			}
+			else if(tmpint == 13)
+			{
+				std::cout << "D";
+			}
+			else if(tmpint == 14)
+			{
+				std::cout << "E";
+			}
+			else if(tmpint == 15)
+			{
+				std::cout << "F";
+			}
+			tmpint = hexstr[i] % 16;
+			if(tmpint < 9)
+			{
+				std::cout << tmpint;
+			}
+			else if(tmpint == 10)
+			{
+				std::cout << "A";
+			}
+			else if(tmpint == 11)
+			{
+				std::cout << "B";
+			}
+			else if(tmpint == 12)
+			{
+				std::cout << "C";
+			}
+			else if(tmpint == 13)
+			{
+				std::cout << "D";
+			}
+			else if(tmpint == 14)
+			{
+				std::cout << "E";
+			}
+			else if(tmpint == 15)
+			{
+				std::cout << "F";
+			}
+		}
+		std::cout << std::endl << std::endl;
+	}
 #endif
+	glEndConditionalRender();
 }
 void
 hge::render::GeometryUnit::occlusionQuery(const math::Matrix4D<> &vp)
 {
 	mvp = vp * modelMatrix.getConstRotateScaleTranslateMatrix();
-	glBeginQuery(GL_ANY_SAMPLES_PASSED, queries[HGEGEOMETRYOCCLUSIONQUERYINDEX]);
+	glBeginQuery(GL_ANY_SAMPLES_PASSED, queries[HGEGEOMETRYOCCLUSIONQUERYID]);
 	occlusionQueryShader->setModelViewProjectionMatrix(mvp);
 	occlusionQueryMesh->bindTotal();
 	occlusionQueryMesh->draw();
+#ifdef HGEGEOMETRYDEBUGMVPVALUECHECK
+	{
+		auto hexstr = (char *)glm::value_ptr(mvp);
+		HGEPRINTCODELINE
+		std::cout << "Value of mvp is: ";
+		for(int i = 0; i < sizeof(hexstr); i++)
+		{
+			int tmpint = hexstr[i] / 16;
+			if(tmpint < 9)
+			{
+				std::cout << tmpint;
+			}
+			else if(tmpint == 10)
+			{
+				std::cout << "A";
+			}
+			else if(tmpint == 11)
+			{
+				std::cout << "B";
+			}
+			else if(tmpint == 12)
+			{
+				std::cout << "C";
+			}
+			else if(tmpint == 13)
+			{
+				std::cout << "D";
+			}
+			else if(tmpint == 14)
+			{
+				std::cout << "E";
+			}
+			else if(tmpint == 15)
+			{
+				std::cout << "F";
+			}
+			tmpint = hexstr[i] % 16;
+			if(tmpint < 9)
+			{
+				std::cout << tmpint;
+			}
+			else if(tmpint == 10)
+			{
+				std::cout << "A";
+			}
+			else if(tmpint == 11)
+			{
+				std::cout << "B";
+			}
+			else if(tmpint == 12)
+			{
+				std::cout << "C";
+			}
+			else if(tmpint == 13)
+			{
+				std::cout << "D";
+			}
+			else if(tmpint == 14)
+			{
+				std::cout << "E";
+			}
+			else if(tmpint == 15)
+			{
+				std::cout << "F";
+			}
+		}
+		std::cout << std::endl << std::endl;
+	}
+#endif
 	glEndQuery(GL_ANY_SAMPLES_PASSED);
 }
 void hge::render::GeometryUnit::occlusionQueryStarter(const math::Matrix4D<> &vp)
 {
 	mvp = vp * modelMatrix.getConstRotateScaleTranslateMatrix();
-	glBeginQuery(GL_ANY_SAMPLES_PASSED, queries[HGEGEOMETRYOCCLUSIONQUERYINDEX]);
+	glBeginQuery(GL_ANY_SAMPLES_PASSED, queries[HGEGEOMETRYOCCLUSIONQUERYID]);
 	occlusionQueryMesh->bindTotal();
 	occlusionQueryShader->use();
 	occlusionQueryShader->setModelViewProjectionMatrix(mvp);
@@ -76,8 +203,7 @@ void hge::render::GeometryUnit::setTexture(const std::shared_ptr<texture::Textur
 {
 	this->texture = texture;
 }
-hge::math::ModelUnit*
-hge::render::GeometryUnit::getModelMatrix()
+hge::math::ModelUnit *hge::render::GeometryUnit::getModelMatrix()
 {
 	return &modelMatrix;
 }

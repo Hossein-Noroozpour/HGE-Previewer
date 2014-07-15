@@ -19,22 +19,22 @@ namespace hge
 		void CameraUnit::translate(const Vector3D<> &vec)
 		{
 			cmrLoc -= vec;
-			viewM.translate(-vec);
+			viewM = viewM * Matrix4D<>::translate(-vec);
 		}
 		/// WARNING: Unknown issue maybe exist
 		void CameraUnit::move(const Vector3D<> &vec)
 		{
 			cmrLoc = vec;
-			viewM = Matrix4D<>::translate(rotsclM, vec);
+			viewM = viewM * Matrix4D<>::translate(vec);
 		}
 		void CameraUnit::rotateLocalX(const float &rad)
 		{
-			Matrix4D<> rot = cmrX.createRotationMatrix(-rad);
-			cmrY = rot * cmrY;
-			cmrZ = rot * cmrZ;
-			rotsclM = rot * rotsclM;
-			viewM = rotsclM;
-			viewM.translate(-cmrLoc);
+			Matrix4D<> rot1 = cmrX.createRotationMatrix(-rad);
+			Matrix4D<> rot2 = cmrX.createRotationMatrix(rad);
+			cmrY = rot1 * cmrY;
+			cmrZ = rot1 * cmrZ;
+			rotsclM = rotsclM * rot2;
+			viewM = rotsclM * Matrix4D<>::translate(-cmrLoc);
 		}
 		void CameraUnit::rotateLocalY(const float &rad)
 		{
@@ -43,7 +43,7 @@ namespace hge
 			cmrZ = rot * cmrZ;
 			rotsclM = rot * rotsclM;
 			viewM = rotsclM;
-			viewM.translate(-cmrLoc);
+			viewM = viewM * Matrix4D<>::translate(-cmrLoc);
 		}
 		void CameraUnit::rotateLocalZ(const float &rad)
 		{
@@ -52,7 +52,7 @@ namespace hge
 			cmrY = rot * cmrY;
 			rotsclM = rot * rotsclM;
 			viewM = rotsclM;
-			viewM.translate(-cmrLoc);
+			viewM = viewM * Matrix4D<>::translate(-cmrLoc);
 		}
 		void CameraUnit::rotateLocal(const float &rad, const Vector3D<> &vec)
 		{
@@ -62,7 +62,7 @@ namespace hge
 			cmrZ = rot * cmrZ;
 			rotsclM = rot * rotsclM;
 			viewM = rotsclM;
-			viewM.translate(-cmrLoc);
+			viewM = viewM * Matrix4D<>::translate(-cmrLoc);
 		}
 		void CameraUnit::rotateGlobalX(const float &rad)
 		{
@@ -72,7 +72,7 @@ namespace hge
 			cmrZ = rot * cmrZ;
 			rotsclM = rot * rotsclM;
 			viewM = rotsclM;
-			viewM.translate(-cmrLoc);
+			viewM = viewM * Matrix4D<>::translate(-cmrLoc);
 		}
 		void CameraUnit::rotateGlobalY(const float &rad)
 		{
@@ -82,17 +82,17 @@ namespace hge
 			cmrZ = rot * cmrZ;
 			rotsclM = rot * rotsclM;
 			viewM = rotsclM;
-			viewM.translate(-cmrLoc);
+			viewM = viewM * Matrix4D<>::translate(-cmrLoc);
 		}
 		void CameraUnit::rotateGlobalZ(const float &rad)
 		{
-			Matrix4D<> rot = Vector3D<>(0.0f, 0.0f, 1.0f).createRotationMatrix(-rad);
-			cmrX = rot * cmrX;
-			cmrY = rot * cmrY;
-			cmrZ = rot * cmrZ;
-			rotsclM = rot * rotsclM;
-			viewM = rotsclM;
-			viewM.translate(-cmrLoc);
+			Matrix4D<> rot1 = Vector3D<>(0.0f, 0.0f, 1.0f).createRotationMatrix(-rad);
+			Matrix4D<> rot2 = Vector3D<>(0.0f, 0.0f, 1.0f).createRotationMatrix(rad);
+			cmrX = rot1 * cmrX;
+			cmrY = rot1 * cmrY;
+			cmrZ = rot1 * cmrZ;
+			rotsclM = rotsclM * rot2;
+			viewM = rotsclM * Matrix4D<>::translate(-cmrLoc);
 		}
 		void CameraUnit::rotateTotal(const float &rad, const Vector3D<> &vec)
 		{
@@ -162,13 +162,13 @@ namespace hge
 		{
 			Vector3D<> vec = cmrZ * spd;
 			cmrLoc -= vec;
-			viewM.translate(vec);
+			viewM = viewM * Matrix4D<>::translate(vec);
 		}
 		void CameraUnit::moveSideward(const float& spd)
 		{
 			Vector3D<> vec = cmrX * spd;
-			cmrLoc -= vec;
-			viewM.translate(vec);
+			cmrLoc += vec;
+			viewM = viewM * Matrix4D<>::translate(-vec);
 		}
 	}
 }

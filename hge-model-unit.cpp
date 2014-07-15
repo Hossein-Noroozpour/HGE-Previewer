@@ -13,13 +13,15 @@ hge::math::ModelUnit::ModelUnit():
 void hge::math::ModelUnit::ModelUnit::translate (const math::Vector3D<> &trn)
 {
 	location += trn;
-	rotateScaleTranslateMatrix.translate(trn);
+	rotateScaleTranslateMatrix = rotateScaleTranslateMatrix * Matrix4D<>::translate(trn);
 }
 
 void hge::math::ModelUnit::scale(const float &size)
 {
-	rotateScaleMatrix.scale(size);
-	rotateScaleTranslateMatrix.translate(location);
+	(void) size;
+	/// TODO: It is not neccesary now
+	//rotateScaleMatrix.scale(size);
+	//rotateScaleTranslateMatrix.translate(location);
 }
 
 const hge::math::Matrix4D<> &hge::math::ModelUnit::getConstRotateScaleTranslateMatrix()

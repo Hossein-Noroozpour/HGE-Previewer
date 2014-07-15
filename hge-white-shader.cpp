@@ -1,7 +1,6 @@
 #include "hge-white-shader.hpp"
 #include <iostream>
 #include <cassert>
-#include "hge-shader-engine.hpp"
 #define HGEPRINTCODELINE std::cout << "Debugging: file:" << __FILE__ << " line:" << __LINE__ << std::endl << std::flush;
 hge::shader::WhiteShader::WhiteShader():
 	shaderProgram(render::ShaderEngine::createProgram())
@@ -44,7 +43,7 @@ void hge::shader::WhiteShader::setModelMatrix(const math::Matrix4D<> &modelMatri
 }
 void hge::shader::WhiteShader::setModelViewProjectionMatrix(const math::Matrix4D<> &modelViewProjectionMatrix)
 {
-	glUniformMatrix4fv(modelViewProjectionMatrixUniformLocation, 1, GL_FALSE, modelViewProjectionMatrix.mat);
+	glUniformMatrix4fv(modelViewProjectionMatrixUniformLocation, 1, GL_TRUE, modelViewProjectionMatrix.mat);
 }
 void hge::shader::WhiteShader::setLODNumber(const GLuint& lodNumber)
 {

@@ -1,11 +1,6 @@
 #ifndef HGETEXTUREUTIL_HPP
 #define HGETEXTUREUTIL_HPP
-#ifdef ANDROID
-#include <GLES3/gl3.h>
-#else
-#include <GL/glew.h>
-#include <GL/gl.h>
-#endif
+#include "hge-glfw-window.hpp"
 #include <iostream>
 #include <cstdlib>
 #include <cstdio>

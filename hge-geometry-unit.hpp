@@ -1,16 +1,13 @@
-#ifndef HGE_GEOMETRY_UNIT_HPP_
-#define HGE_GEOMETRY_UNIT_HPP_
-#include <string.h>
+#ifndef HGEGEOMETRYUNIT_HPP
+#define	HGEGEOMETRYUNIT_HPP
+#include <string>
 #include "hge-mesh-unit.hpp"
 #include "hge-model-unit.hpp"
 #include "hge-shader-unit.hpp"
 #include "hge-texture-unit.hpp"
-#include "hge-math.hpp"
-#include <memory>
 //#define HGEGEOMETRYDEBUGMVPVALUECHECK
-#define HGEGEOMETRYNUMBEROFQUERIES 2
-#define HGEGEOMETRYOCCLUSIONQUERYINDEX 0
-#define HGEGEOMETRYPIXELSPASSED 1
+#define HGEGEOMETRYNUMBEROFQUERIES 1
+#define HGEGEOMETRYOCCLUSIONQUERYID 0
 namespace hge
 {
 	namespace render
@@ -18,13 +15,15 @@ namespace hge
 		class GeometryUnit
 		{
 		public:
-			GeometryUnit(const std::string& id, const std::string& name);
+			GeometryUnit(
+					const std::string& id,
+					const std::string& name);
 			~GeometryUnit();
 			void setMesh(const std::shared_ptr<MeshUnit>& m);
 			void setOcclusionQueryMesh(const std::shared_ptr<MeshUnit>& m);
 			void draw();
-			void occlusionQuery(const math::Matrix4D<>& vp);
-			void occlusionQueryStarter(const math::Matrix4D<>& vp);
+			void occlusionQuery(const math::Matrix4D<> &vp);
+			void occlusionQueryStarter(const math::Matrix4D<> &vp);
 			bool isThisYourID(const std::string& idstr);
 			void setShader(const std::shared_ptr<shader::ShaderUnit>& shader);
 			void setOcclusionQueryShader(const std::shared_ptr<shader::ShaderUnit>& shader);

@@ -86,9 +86,9 @@ void hge::utility::TCPConnector::listener()
 					std::cerr << "Error in file:" << __FILE__ << "  line:" << __LINE__ << std::endl;
 					return;
 				}
-				HGEPRINTLINE(length)
+				//HGEPRINTLINE(length)
 			}
-			HGEPRINTLINE(dataSize)
+			//HGEPRINTLINE(dataSize)
 			application->newData(dataSize, buf);
 		}
 	}

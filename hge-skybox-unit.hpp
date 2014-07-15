@@ -6,7 +6,6 @@
 #include "hge-skybox-shader-unit.hpp"
 #include <vector>
 #include <chrono>
-#include <memory>
 namespace hge
 {
 	namespace render
@@ -15,11 +14,11 @@ namespace hge
 		{
 		private:
 			std::shared_ptr<MeshUnit> mesh;
-			math::Matrix4D<> modelMatrix;
 			std::shared_ptr<shader::SkyBoxShaderUnit> shader;
 			std::shared_ptr<texture::TextureUnit> texture;
 			std::chrono::time_point<std::chrono::system_clock> lastDrawn;
 			float skyTextuePosition;
+			math::Matrix4D<> modelMatrix;
 		public:
 			SkyBoxUnit(const std::shared_ptr<MeshUnit> &mesh);
 			void setShader(const std::shared_ptr<shader::SkyBoxShaderUnit> &shader);

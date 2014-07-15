@@ -96,8 +96,6 @@ void hge::render::ShaderEngine::endObject(
 std::shared_ptr<hge::render::ShaderEngine::hgeUniformBlock>
 hge::render::ShaderEngine::initUniformBlock(const std::string &uniformBlockName, const GLuint &shaderProgram)
 {
-	(void) uniformBlockName;
-	(void) shaderProgram;
 	auto result = std::shared_ptr<hgeUniformBlock>(new hgeUniformBlock);
 //	result->index = glGetUniformBlockIndex(shaderProgram, uniformBlockName.c_str());
 //	glGenBuffers(1, &(result->buffer));

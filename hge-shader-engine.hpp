@@ -1,13 +1,8 @@
 #ifndef HGESHADERENGINE_HPP
 #define HGESHADERENGINE_HPP
-#ifdef ANDROID
-#include <GLES3/gl3.h>
-#else
-#include <GL/glew.h>
-#include <GL/gl.h>
-#endif
 #include <string>
-#include <memory>
+#include "hge-glfw-window.hpp"
+
 namespace hge
 {
 	namespace render

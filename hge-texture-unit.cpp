@@ -1,7 +1,5 @@
 #include "hge-texture-unit.hpp"
 #include <iostream>
-#ifdef ANDROID
-#else
 hge::texture::TextureUnit::TextureUnit(GLenum TextureTarget, const std::string& FileName)
 {
 	auto bitmap = FreeImage_Load(FreeImage_GetFileType(FileName.c_str(), 0), FileName.c_str());
@@ -23,7 +21,6 @@ bool hge::texture::TextureUnit::load()
 {
 	return true;
 }
-#endif
 void hge::texture::TextureUnit::bind(GLenum TextureUnit)
 {
 	glActiveTexture(TextureUnit);

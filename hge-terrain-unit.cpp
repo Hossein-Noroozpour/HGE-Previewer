@@ -67,8 +67,7 @@ hge::render::TerrainUnit::TerrainUnit(const int16_t *const &heights, const int &
 }
 hge::render::TerrainUnit::TerrainUnit(const unsigned int &size, unsigned char * const &data)
 {
-	HGEPRINTCODELINE HGEPRINTCODELINE HGEPRINTCODELINE HGEPRINTCODELINE
-	GLuint aspect = ((core::Protocol::terrain_aspect_type *)data)[0];
+	GLuint aspect = GLuint(((core::Protocol::terrain_aspect_type *)data)[0]);
 	GLuint vbo_components_count = ((core::Protocol::terrain_vbo_components_count_type *)(data + sizeof(core::Protocol::terrain_aspect_type)))[0];
 	if(size != aspect * aspect * vbo_components_count * sizeof(GLfloat) +
 			sizeof(core::Protocol::terrain_aspect_type) +
@@ -76,7 +75,6 @@ hge::render::TerrainUnit::TerrainUnit(const unsigned int &size, unsigned char * 
 	{
 		throw std::string("Error in Size");
 	}
-	HGEPRINTCODELINE HGEPRINTCODELINE HGEPRINTCODELINE HGEPRINTCODELINE
 	GLuint *ibo = new GLuint[(aspect - 1) * (aspect - 1) * 6];
 	for(int l = 0, iboIndex = 0; l < NUMBEROFLODS; l++)
 	{
@@ -95,12 +93,10 @@ hge::render::TerrainUnit::TerrainUnit(const unsigned int &size, unsigned char * 
 		}
 		addIBO(ibo, iboIndex * sizeof(GLuint));
 	}
-	HGEPRINTCODELINE HGEPRINTCODELINE HGEPRINTCODELINE HGEPRINTCODELINE
 	setVBO((GLfloat *)(data +
 					   sizeof(core::Protocol::terrain_aspect_type) +
 					   sizeof(core::Protocol::terrain_vbo_components_count_type)),
 		   aspect * aspect * vbo_components_count * sizeof(GLfloat));
-	HGEPRINTCODELINE HGEPRINTCODELINE HGEPRINTCODELINE HGEPRINTCODELINE
 	delete [] ibo;
 }
 void hge::render::TerrainUnit::calculateNTBs(const int &aspect, const double &verticalDegree, const double &horizontalDegree, GLfloat *vbo, const int16_t *const &heights)

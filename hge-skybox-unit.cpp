@@ -1,8 +1,8 @@
 #include "hge-skybox-unit.hpp"
 hge::render::SkyBoxUnit::SkyBoxUnit(const std::shared_ptr<MeshUnit> &mesh):
 	mesh(mesh),
-	modelMatrix(math::Matrix4D<>(100000000000000000000000000000.0f)),
-	lastDrawn(std::chrono::system_clock::now())
+	lastDrawn(std::chrono::system_clock::now()),
+	modelMatrix(math::Matrix4D<>(100000000000000000000000000000.0f))
 {
 }
 

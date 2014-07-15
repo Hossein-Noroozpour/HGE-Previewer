@@ -1,7 +1,7 @@
 #ifndef HGESKYBOXSHADERUNIT_HPP
 #define HGESKYBOXSHADERUNIT_HPP
+#include "hge-shader-engine.hpp"
 #include "hge-shader-unit.hpp"
-#include <string>
 #define HGESKYBOXSHADERUINTNUMBEROFLEVELS 3
 namespace hge
 {

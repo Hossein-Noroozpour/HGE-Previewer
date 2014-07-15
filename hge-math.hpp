@@ -121,7 +121,7 @@ namespace hge
 			}
 			Vector3D<element_type> operator-() const
 			{
-				return Vector3D<element_type>(vec[0], vec[1], vec[2]);
+				return Vector3D<element_type>(-vec[0], -vec[1], -vec[2]);
 			}
 			Matrix4D<element_type> createRotationMatrix(const element_type &degree) const
 			{
@@ -274,60 +274,75 @@ namespace hge
 				Vector3D<element_type> x = up.cross(z);
 				x.normalize();
 				Vector3D<element_type> y = z.cross(x);
-				Matrix4D<element_type> m;
-				m.mat[0 ] = x.vec[0];
-				m.mat[1 ] = x.vec[1];
-				m.mat[2 ] = x.vec[2];
-				m.mat[3 ] = -x.dot(position);
+				Matrix4D<element_type> m;/*
+				m.mat[0 ] = -x.vec[0];
+				m.mat[1 ] = y.vec[0];
+				m.mat[2 ] = -z.vec[0];
+				m.mat[3 ] = element_type(0.0);
+				m.mat[4 ] = -x.vec[1];
+				m.mat[5 ] = y.vec[1];
+				m.mat[6 ] = -z.vec[1];
+				m.mat[7 ] = element_type(0.0);
+				m.mat[8 ] = -x.vec[2];
+				m.mat[9 ] = y.vec[2];
+				m.mat[10] = -z.vec[2];
+				m.mat[11] = element_type(0.0);
+				m.mat[12] = x.dot(position);
+				m.mat[13] = -y.dot(position);
+				m.mat[14] = z.dot(position);
+				m.mat[15] = element_type(1.0);
+				*/
+				/**/
+				m.mat[0 ] = -x.vec[0];
+				m.mat[1 ] = -x.vec[1];
+				m.mat[2 ] = -x.vec[2];
+				m.mat[3 ] = x.dot(position);
 				m.mat[4 ] = y.vec[0];
 				m.mat[5 ] = y.vec[1];
 				m.mat[6 ] = y.vec[2];
 				m.mat[7 ] = -y.dot(position);
-				m.mat[8 ] = z.vec[0];
-				m.mat[9 ] = z.vec[1];
-				m.mat[10] = z.vec[2];
-				m.mat[11] = -z.dot(position);
+				m.mat[8 ] = -z.vec[0];
+				m.mat[9 ] = -z.vec[1];
+				m.mat[10] = -z.vec[2];
+				m.mat[11] = z.dot(position);
 				m.mat[12] = element_type(0.0);
 				m.mat[13] = element_type(0.0);
 				m.mat[14] = element_type(0.0);
 				m.mat[15] = element_type(1.0);
+				/**/
 				return m;
 			}
-			static Matrix4D<element_type> translate(const Matrix4D<element_type> &m, const Vector3D<element_type> &v)
+			static Matrix4D<element_type> translate(const Vector3D<element_type> &v)
 			{
 				Matrix4D<element_type> r;
 				for(unsigned int i = 0; i < 16; i++)
 				{
-					r.mat[i] = m.mat[i];
+					r.mat[i] = element_type(0);
 				}
-				r.mat[3 ] += v.vec[0];
-				r.mat[7 ] += v.vec[1];
-				r.mat[11] += v.vec[2];
+				r.mat[0 ] = element_type(1);
+				r.mat[3 ] = v.vec[0];
+				r.mat[5 ] = element_type(1);
+				r.mat[7 ] = v.vec[1];
+				r.mat[10] = element_type(1);
+				r.mat[11] = v.vec[2];
+				r.mat[15] = element_type(1);
 				return r;
 			}
-			static Matrix4D<element_type> translate(const Matrix4D<element_type> &m, const Vector4D<element_type> &v)
+			static Matrix4D<element_type> translate(const Vector4D<element_type> &v)
 			{
 				Matrix4D<element_type> r;
 				for(unsigned int i = 0; i < 16; i++)
 				{
-					r.mat[i] = m.mat[i];
+					r.mat[i] = element_type(0);
 				}
-				r.mat[3 ] += v.vec[0];
-				r.mat[7 ] += v.vec[1];
-				r.mat[11] += v.vec[2];
+				r.mat[0 ] = element_type(1);
+				r.mat[3 ] = v.vec[0];
+				r.mat[5 ] = element_type(1);
+				r.mat[7 ] = v.vec[1];
+				r.mat[10] = element_type(1);
+				r.mat[11] = v.vec[2];
+				r.mat[15] = element_type(1);
 				return r;
-			}
-			void translate(const Vector3D<element_type> &v)
-			{
-				mat[3 ] += v.vec[0];
-				mat[7 ] += v.vec[1];
-				mat[11] += v.vec[2];
-			}
-			void translate(const Vector4D<element_type> &v)
-			{
-				mat[3 ] += v.vec[0];
-				mat[7 ] += v.vec[1];
-				mat[11] += v.vec[2];
 			}
 			Vector3D<element_type> operator*(const Vector3D<element_type> &v) const
 			{
@@ -378,13 +393,6 @@ namespace hge
 				for(int i = 0; i < 16; i++)
 				{
 					mat[i] = m.mat[i];
-				}
-			}
-			void scale(const element_type &f)
-			{
-				for(unsigned int i = 0; i < 16; i++)
-				{
-					mat[i] *= f;
 				}
 			}
 			static Matrix4D<element_type> perspective(
