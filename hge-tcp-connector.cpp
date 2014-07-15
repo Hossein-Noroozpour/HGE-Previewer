@@ -1,10 +1,13 @@
 #include "hge-tcp-connector.hpp"
+#include "hge-application-unit.hpp"
 #include <cstdint>
 #include <functional>
 #include <thread>
 #include <mutex>
 #include <boost/asio.hpp>
 #include <boost/array.hpp>
+#define HGEVERBOSELEVEL1
+#define HGEPRINTLINE(X) std::cout << X << std::endl << "Debugging tag in file:" << __FILE__ << " in line:" << __LINE__ << std::endl;
 hge::utility::TCPConnector::TCPConnector():
 	terminated(false)
 {
@@ -36,10 +39,10 @@ void hge::utility::TCPConnector::listener()
 	{
 		boost::asio::io_service io_service;
 		boost::asio::ip::tcp::acceptor acceptor(io_service, boost::asio::ip::tcp::endpoint(boost::asio::ip::tcp::v6(), 6666));
-		boost::asio::ip::tcp::socket socket(io_service);
-		acceptor.accept(socket);
 		for (;;)
 		{
+			boost::asio::ip::tcp::socket socket(io_service);
+			acceptor.accept(socket);
 			boost::system::error_code error;
 			std::uint32_t dataSize = 0;
 			size_t len = socket.read_some(boost::asio::buffer(&dataSize, sizeof(std::uint32_t)), error);
@@ -47,7 +50,7 @@ void hge::utility::TCPConnector::listener()
 			{
 				return;
 			}
-			if(error != boost::asio::error::eof)
+			if(error != boost::asio::error::eof && error.message() != std::string("Success"))
 			{
 				std::cerr << error.message() << std::endl;
 				std::cerr << "Error in file:" << __FILE__ << "  line:" << __LINE__ << std::endl;
@@ -65,24 +68,28 @@ void hge::utility::TCPConnector::listener()
 				std::cerr << "Error in file:" << __FILE__ << "  line:" << __LINE__ << std::endl;
 				return;
 			}
+#ifdef HGEVERBOSELEVEL1
+			std::cout << "Data in: " << dataSize << "(byte) arrived" << std::endl;
+#endif
 			unsigned char *buf = new unsigned char[dataSize];
-			len = socket.read_some(boost::asio::buffer(buf, dataSize), error);
-			if(terminated)
+			for(size_t length = boost::asio::read(socket, boost::asio::buffer(buf, dataSize), error);
+				length < dataSize;
+				length += socket.read_some(boost::asio::buffer(&(buf[length]), dataSize - length), error))
 			{
-				return;
+				if(terminated)
+				{
+					return;
+				}
+				if(error != boost::asio::error::eof && error.message() != std::string("Success"))
+				{
+					std::cerr << error.message() << std::endl;
+					std::cerr << "Error in file:" << __FILE__ << "  line:" << __LINE__ << std::endl;
+					return;
+				}
+				HGEPRINTLINE(length)
 			}
-			if(error != boost::asio::error::eof)
-			{
-				std::cerr << error.message() << std::endl;
-				std::cerr << "Error in file:" << __FILE__ << "  line:" << __LINE__ << std::endl;
-				return;
-			}
-			if(len != dataSize)
-			{
-				std::cerr << error.message() << std::endl;
-				std::cerr << "Error in file:" << __FILE__ << "  line:" << __LINE__ << std::endl;
-				return;
-			}
+			HGEPRINTLINE(dataSize)
+			application->newData(dataSize, buf);
 		}
 	}
 	catch (std::exception &e)
@@ -97,6 +104,8 @@ void hge::utility::TCPConnector::sendData(const unsigned int &size, const unsign
 		boost::asio::io_service io_service;
 		boost::asio::ip::tcp::socket socket(io_service);
 		socket.connect(boost::asio::ip::tcp::endpoint(boost::asio::ip::tcp::v6(), 6667));
+		boost::system::error_code error;
+		socket.write_some(boost::asio::buffer(data, size), error);
 //		for (;;)
 //		{
 //			boost::array<char, 2> buf;

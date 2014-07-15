@@ -1,10 +1,11 @@
 #include "hge-director.hpp"
+#include "hge-tcp-connector.hpp"
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
 #include <iostream>
-hge::core::ApplicationUnit *application;
-double lastCursorXposition;
-double lastCursorYposition;
+static hge::core::ApplicationUnit *application;
+static double lastCursorXposition;
+static double lastCursorYposition;
 static void onErrorEvent(const int errorNumber, const char *errorDescription)
 {
 	std::cerr << "Error number is: "
@@ -160,7 +161,10 @@ int main(int argc, char ** argv)
 {
 	(void) argc;
 	(void) argv;
+	hge::utility::TCPConnector *connector = new hge::utility::TCPConnector();
 	application = new hge::core::Director();
+	connector->setApplication(application);
+	connector->startConnection();
 	application->start();
 	GLFWwindow* window;
 	glfwSetErrorCallback(onErrorEvent);
@@ -171,7 +175,7 @@ int main(int argc, char ** argv)
 	}
 	auto priMon = glfwGetPrimaryMonitor();
 	auto vidMod = glfwGetVideoMode(priMon);
-	window = glfwCreateWindow(vidMod->width, vidMod->height, "Hulixerian Game Engine", priMon, NULL);
+	window = glfwCreateWindow(800, 600 /*vidMod->width, vidMod->height*/, "Hulixerian Game Engine", 0/*priMon*/, NULL);
 	if(!window)
 	{
 		glfwTerminate();

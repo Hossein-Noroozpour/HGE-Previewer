@@ -3,6 +3,8 @@
 #include "hge-terrain-sun-shader.hpp"
 #include "hge-protocol.hpp"
 #include <thread>
+#include <iostream>
+#define HGEPRINTCODELINE std::cout << "Debugging: file:" << __FILE__ << " line:" << __LINE__ << std::endl << std::flush;
 hge::core::Director::Director():
 	goForward(false),
 	goDownward(false),
@@ -30,11 +32,13 @@ void hge::core::Director::update()
 	for(auto f : gldo)
 	{
 		f();
+		HGEPRINTCODELINE
 	}
 	gldo.clear();
-	//////////////////////////////////////////////////////////////////
 	gldo_lock.unlock();
 	std::this_thread::yield();
+	scene->draw();
+	////////////////////////////////////////////////////////
 }
 void hge::core::Director::buttonPressed(const HGEButton& key)
 {
@@ -55,23 +59,25 @@ void hge::core::Director::mouseMoved(const float &dx, const float &dy)
 void hge::core::Director::newData(const unsigned int &size, unsigned char *const &data)
 {
 	new_data_lock.lock();
-	switch(((Protocol::instructions *)data)[0])
+	switch(((Protocol::instructions_type *)data)[0])
 	{
 		case Protocol::new_object :
 		{
-			unsigned int id = ((unsigned int *)(data + sizeof(Protocol::instructions)))[0];
+			const unsigned int id_index = sizeof(Protocol::instructions);
+			const unsigned int type_index = id_index + sizeof(Protocol::id_type);
+			const unsigned int data_index = type_index + sizeof(Protocol::object_type_id_type);
+			Protocol::id_type id = ((Protocol::id_type *)(&(data[id_index])))[0];
 			object_ids.push_back(id);
-			switch (((Protocol::type_id *)(data + sizeof(Protocol::instructions) + sizeof(unsigned int)))[0])
+			switch (((Protocol::object_type_id_type *)(&(data[type_index])))[0])
 			{
 				case Protocol::terrain:
 				{
+					HGEPRINTCODELINE HGEPRINTCODELINE HGEPRINTCODELINE
 					auto f = [=] () -> void
 					{
-						auto terrain = std::shared_ptr<render::TerrainUnit>(new render::TerrainUnit(
-								size - (sizeof(Protocol::instructions) + sizeof(unsigned int) + sizeof(Protocol::type_id)),
-								data + sizeof(Protocol::instructions) + sizeof(unsigned int) +
-								sizeof(Protocol::type_id)));
-						auto terrainShader = std::shared_ptr<hge::shader::TerrainSunShader>(new hge::shader::TerrainSunShader());
+						HGEPRINTCODELINE HGEPRINTCODELINE HGEPRINTCODELINE
+						std::shared_ptr<render::TerrainUnit> terrain(new render::TerrainUnit(size - data_index, &(data[data_index])));
+						std::shared_ptr<hge::shader::TerrainSunShader> terrainShader(new hge::shader::TerrainSunShader());
 						terrain->setShader(terrainShader);
 						{
 							const std::string texL = "textures/";
@@ -86,16 +92,16 @@ void hge::core::Director::newData(const unsigned int &size, unsigned char *const
 								"sand.jpg",
 								"sea.jpg"
 							};
-							for(auto i = 0; i < 8; i++)
+							for(unsigned int i = 0; i < 8; i++)
 							{
-								auto tex = std::shared_ptr<hge::texture::TextureUnit>(
-											new hge::texture::TextureUnit(GL_TEXTURE_2D, texL + texF[i]));
+								std::shared_ptr<hge::texture::TextureUnit> tex(new hge::texture::TextureUnit(GL_TEXTURE_2D, texL + texF[i]));
 								tex->load();
 								terrain->addTexture(tex);
 							}
 						}
 						scene->setTerrain(terrain);
 						new_data_lock.unlock();
+						delete [] data;
 					};
 					gldo_lock.lock();
 					gldo.push_back(static_cast<std::function<void(void)>>(f));
@@ -104,6 +110,7 @@ void hge::core::Director::newData(const unsigned int &size, unsigned char *const
 				}
 				default:
 				{
+					HGEPRINTCODELINE HGEPRINTCODELINE HGEPRINTCODELINE
 					break;
 				}
 			}
@@ -114,4 +121,5 @@ void hge::core::Director::newData(const unsigned int &size, unsigned char *const
 			break;
 		}
 	}
+	delete [] data;
 }
