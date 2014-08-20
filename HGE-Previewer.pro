@@ -24,7 +24,8 @@ SOURCES += \
 	hge-texture-util.cpp \
 	hge-vertex-data.cpp \
 	hge-white-shader.cpp \
-	hge-tcp-connector.cpp
+	hge-tcp-connector.cpp \
+    hge-collada-importer.cpp
 
 OTHER_FILES += \
 	LICENSE \
@@ -54,4 +55,5 @@ HEADERS += \
 	hge-white-shader.hpp \
 	hge-protocol.hpp \
 	hge-connector.hpp \
-	hge-tcp-connector.hpp
+	hge-tcp-connector.hpp \
+    hge-collada-importer.hpp

@@ -20,6 +20,7 @@ namespace hge
 			bool goDownward;
 			bool goRightward;
 			bool goLeftward;
+			bool rotateOn;
 			bool wireframeMode;
 			float m_cameraRotationSpeed;
 			float m_cameraMoveSpeed;

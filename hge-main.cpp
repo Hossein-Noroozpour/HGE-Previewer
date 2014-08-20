@@ -60,6 +60,9 @@ static void onKeyEvent(GLFWwindow* window, int key, int scanCode, int action, in
 				case(GLFW_KEY_PAGE_DOWN):
 					application->buttonPressed(hge::core::ApplicationUnit::PageDownButton);
 					break;
+				case(GLFW_MOUSE_BUTTON_MIDDLE):
+					application->buttonPressed(hge::core::ApplicationUnit::middleMouseButton);
+					break;
 				default:
 					break;
 			}
@@ -92,6 +95,9 @@ static void onKeyEvent(GLFWwindow* window, int key, int scanCode, int action, in
 					break;
 				case(GLFW_KEY_RIGHT):
 					application->buttonReleased(hge::core::ApplicationUnit::rightArrowKeyButton);
+					break;
+				case(GLFW_MOUSE_BUTTON_MIDDLE):
+					application->buttonReleased(hge::core::ApplicationUnit::middleMouseButton);
 					break;
 				default:
 					break;
@@ -175,7 +181,10 @@ int main(int argc, char ** argv)
 	}
 	auto priMon = glfwGetPrimaryMonitor();
 	auto vidMod = glfwGetVideoMode(priMon);
-	window = glfwCreateWindow(800, 600 /*vidMod->width, vidMod->height*/, "Hulixerian Game Engine", 0/*priMon*/, NULL);
+	auto mainMonitor = 0;//priMon
+	auto screenWidth = 800;//vidMod->width
+	auto screenHeight = 600;//vidMod->height
+	window = glfwCreateWindow(screenWidth, screenHeight, "Hulixerian Game Engine", (GLFWmonitor *)(mainMonitor), NULL);
 	if(!window)
 	{
 		glfwTerminate();
@@ -188,7 +197,7 @@ int main(int argc, char ** argv)
 		std::cerr << "Error in initializing GLEW in file:" << __FILE__ << " in line:" << __LINE__;
 		return 1;
 	}
-	glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
+	glClearColor(0.3f, 0.4f, 0.8f, 1.0f);
 	glEnable(GL_CULL_FACE);
 	glEnable(GL_DEPTH_TEST);
 	glEnable(GL_SCISSOR_TEST);
@@ -197,13 +206,13 @@ int main(int argc, char ** argv)
 	glfwSetKeyCallback(window, onKeyEvent);
 	glfwSetMouseButtonCallback(window, onMouseKeyEvent);
 	glfwSetCursorPosCallback(window, onCursorMoveEvent);
-	glViewport(0, 0, vidMod->width, vidMod->height);
+	glViewport(0, 0, screenWidth, screenHeight);
 	application->initialize();
 	glfwSetFramebufferSizeCallback(window, onChangeSizeEvent);
 	//glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 	while(!glfwWindowShouldClose(window))
 	{
-		glClear(GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
+		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
 		application->update();
 		glFinish();
 		glfwSwapBuffers(window);
