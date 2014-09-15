@@ -1,15 +1,10 @@
 #include "hge-scene-unit.hpp"
 #include "hge-white-shader.hpp"
 #include <iostream>
-#ifdef _WIN64
-#define HGESCENEUNITDEFAULTTEXTUREFILENAME "C:\\Users\\Thany\\Documents\\Visual Studio 2012\\Projects\\HGE\\x64\\Release\\textures\\hge.jpg"
-#elif __unix__
-#define HGESCENEUNITDEFAULTTEXTUREFILENAME "textures/hge.jpg"
-#endif
+std::shared_ptr<hge::shader::SunShader> hge::render::SceneUnit::defaultShader;
+std::shared_ptr<hge::texture::TextureUnit> hge::render::SceneUnit::defaultTexture;
 hge::render::SceneUnit::SceneUnit():
 	occlusionQueryShader(new shader::WhiteShader()),
-	defaultShader(new shader::SunShader()),
-	defaultTexture(new texture::TextureUnit(GL_TEXTURE_2D, HGESCENEUNITDEFAULTTEXTUREFILENAME)),
 	currentCameraIndex(0),
 	currentPerspectiveIndex(0),
 	hasTerrain(false),
@@ -21,7 +16,9 @@ hge::render::SceneUnit::SceneUnit():
 void hge::render::SceneUnit::addGeometry(const std::shared_ptr<GeometryUnit>& geometry)
 {
 	hasGeometry = true;
+#ifdef GL_ES_VERSION_3_0
 	geometry->setOcclusionQueryShader(occlusionQueryShader);
+#endif
 	geometry->setShader(defaultShader);
 	geometry->setTexture(defaultTexture);
 	geometry->getModelMatrix()->scale(1000.0f);
@@ -45,6 +42,7 @@ hge::render::SceneUnit::draw()
 	}
 	if(hasGeometry)
 	{
+#ifdef HGE_BASIC_QUERY_SUPPORT
 		glColorMask(GL_FALSE, GL_FALSE, GL_FALSE, GL_FALSE);
 		glDepthMask(GL_FALSE);
 		geometries[0]->occlusionQueryStarter(vp);
@@ -54,9 +52,14 @@ hge::render::SceneUnit::draw()
 		}
 		glColorMask(GL_TRUE, GL_TRUE, GL_TRUE, GL_TRUE);
 		glDepthMask(GL_TRUE);
+#endif
 		for(unsigned int i = 0; i < geometries.size(); i++)
 		{
+#ifdef HGE_BASIC_QUERY_SUPPORT
 			geometries[i]->draw();
+#else
+			geometries[i]->draw(vp);
+#endif
 		}
 	}
 }
@@ -78,8 +81,7 @@ void hge::render::SceneUnit::setTerrain(const std::shared_ptr<TerrainUnit>& t)
 	hasTerrain = true;
 	terrain = t;
 }
-std::shared_ptr<hge::math::CameraUnit>
-hge::render::SceneUnit::getCamera(const unsigned int& cameraIndex)
+std::shared_ptr<hge::math::CameraUnit> hge::render::SceneUnit::getCamera(const unsigned int& cameraIndex)
 {
 	return cameras[cameraIndex];
 }

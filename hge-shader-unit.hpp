@@ -1,7 +1,12 @@
-#ifndef HGESHADERUNIT_HPP
-#define	HGESHADERUNIT_HPP
+#ifndef HGE_SHADER_UNIT_HPP_
+#define HGE_SHADER_UNIT_HPP_
+#ifdef ANDROID
+#include <GLES2/gl2.h>
+#else
+#include <GL/glew.h>
+#include <GL/gl.h>
+#endif
 #include "hge-math.hpp"
-#include "hge-shader-engine.hpp"
 namespace hge
 {
 	namespace shader

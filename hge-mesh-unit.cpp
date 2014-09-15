@@ -1,7 +1,13 @@
 #include "hge-mesh-unit.hpp"
 #include <iostream>
 #define HGEPRINTCODELINE std::cout << "Debugging: file:" << __FILE__ << " line:" << __LINE__ << std::endl << std::flush;
-hge::render::MeshUnit::MeshUnit()
+hge::render::MeshUnit::MeshUnit():
+vbo(0),
+ibo(0),
+vboSize(0),
+vboElementsNumber(0),
+iboSize(0),
+numberOfIndices(0)
 {}
 hge::render::MeshUnit::MeshUnit(
 		const GLfloat* const& vertices,

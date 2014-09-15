@@ -1,8 +1,8 @@
 #ifndef HGETERRAINSUNSHADER_HPP
 #define	HGETERRAINSUNSHADER_HPP
 #include "hge-math.hpp"
-#include "hge-glfw-window.hpp"
 #include "hge-shader-unit.hpp"
+#include <string>
 //#define HGETERRAINSUNSHADERDEBUGMODE
 #define HGETERRAINSUNSHADERNUMBEROFTEXTURES 8
 #define HGEPRINTCODELINE std::cout << "Debugging: file:" << __FILE__ << " line:" << __LINE__ << std::endl << std::flush;

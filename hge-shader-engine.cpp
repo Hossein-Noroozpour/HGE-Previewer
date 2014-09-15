@@ -105,6 +105,7 @@ hge::render::ShaderEngine::initUniformBlock(const std::string &uniformBlockName,
 
 	return result;
 }
+#ifdef GL_ES_VERSION_3_0
 void hge::render::ShaderEngine::setUniformBlockData(
 		const GLuint &offset,
 		const GLuint &sizeOfData,
@@ -114,7 +115,7 @@ void hge::render::ShaderEngine::setUniformBlockData(
 	glBindBuffer(GL_UNIFORM_BUFFER, uniformBlock->buffer);
 	glBufferSubData(GL_UNIFORM_BUFFER, offset , sizeOfData, data);
 }
-
+#endif
 std::string hge::render::ShaderEngine::readIntireFile(const std::string &fileName)
 {
 	std::string result;

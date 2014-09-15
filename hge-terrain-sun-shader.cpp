@@ -19,7 +19,10 @@ hge::shader::TerrainSunShader::TerrainSunShader():
 	std::cout << "Vertext shader compiled." << std::endl;
 	HGEPRINTCODELINE
 #endif
+#ifdef ANDROID
+#else
 	geometryShaderProgram = render::ShaderEngine::addShaderToProgram(pGS, GL_GEOMETRY_SHADER, shaderProgram);
+#endif
 #ifdef HGETERRAINSUNSHADERDEBUGMODE
 	std::cout << "Geometry shader compiled." << std::endl;
 	HGEPRINTCODELINE
@@ -34,7 +37,7 @@ hge::shader::TerrainSunShader::TerrainSunShader():
 #ifdef HGETERRAINSUNSHADERDEBUGMODE
 	assert(mvpmul != 0xFFFFFFFF);
 #endif
-	glUniformMatrix4fv(mvpmul, 1, GL_TRUE, math::Matrix4D<>(1.0f).mat);
+	glUniformMatrix4fv(mvpmul, 1, GL_FALSE, math::Matrix4D<>(1.0f).mat);
 	cprtmul = render::ShaderEngine::getUniformLocation(std::string("cprtm"), shaderProgram);
 #ifdef HGETERRAINSUNSHADERDEBUGMODE
 	assert(cprtmul != 0xFFFFFFFF);
@@ -64,11 +67,11 @@ hge::shader::TerrainSunShader::~TerrainSunShader()
 }
 void hge::shader::TerrainSunShader::setModelMatrix(const math::Matrix4D<> &modelMatrix)
 {
-	glUniformMatrix4fv(mmul, 1, GL_TRUE, modelMatrix.mat);
+	glUniformMatrix4fv(mmul, 1, GL_FALSE, modelMatrix.mat);
 }
 void hge::shader::TerrainSunShader::setModelViewProjectionMatrix(const math::Matrix4D<> &modelViewProjectionMatrix)
 {
-	glUniformMatrix4fv(mvpmul, 1, GL_TRUE, modelViewProjectionMatrix.mat);
+	glUniformMatrix4fv(mvpmul, 1, GL_FALSE, modelViewProjectionMatrix.mat);
 }
 void hge::shader::TerrainSunShader::setCameraPositionRelativeToModel(const math::Vector3D<>& p)
 {

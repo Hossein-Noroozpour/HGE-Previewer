@@ -1,6 +1,11 @@
-#ifndef HGEMESHUNIT_HPP
-#define HGEMESHUNIT_HPP
-#include "hge-glfw-window.hpp"
+#ifndef HGE_MESH_UNIT_HPP_
+#define HGE_MESH_UNIT_HPP_
+#ifdef ANDROID
+#include <GLES2/gl2.h>
+#else
+#include <GL/glew.h>
+#include <GL/gl.h>
+#endif
 //#define HGEMESHDEBUG
 //#define HGEOPENGLDEBUGMESH
 namespace hge

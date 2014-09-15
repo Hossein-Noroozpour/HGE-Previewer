@@ -1,8 +1,13 @@
 #ifndef HGESHADERENGINE_HPP
 #define HGESHADERENGINE_HPP
 #include <string>
-#include "hge-glfw-window.hpp"
-
+#ifdef ANDROID
+#include <GLES2/gl2.h>
+#else
+#include <GL/glew.h>
+#include <GL/gl.h>
+#endif
+#include <memory>
 namespace hge
 {
 	namespace render
@@ -32,11 +37,13 @@ namespace hge
 			static std::shared_ptr<hgeUniformBlock> initUniformBlock(
 				const std::string &uniformBlockName,
 				const GLuint &shaderProgram);
+#ifdef GL_ES_VERSION_3_0
 			static void setUniformBlockData(
 				const GLuint &offset,
 				const GLuint &sizeOfData,
 				const void * const &data,
 				const hgeUniformBlockPtr &uniformBlock);
+#endif
 			static std::string readIntireFile(const std::string &fileName);
 		};
 	}

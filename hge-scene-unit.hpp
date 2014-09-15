@@ -1,5 +1,5 @@
-#ifndef HGESCENEUNIT_HPP
-#define HGESCENEUNIT_HPP
+#ifndef HGE_SCENE_UNIT_HPP_
+#define HGE_SCENE_UNIT_HPP_
 #include "hge-geometry-unit.hpp"
 #include "hge-terrain-unit.hpp"
 #include "hge-camera-unit.hpp"
@@ -19,8 +19,8 @@ namespace hge
 			std::vector<std::shared_ptr<math::CameraUnit>> cameras;
 			std::vector<std::shared_ptr<math::PerspectiveUnit>> perspectives;
 			std::shared_ptr<shader::ShaderUnit> occlusionQueryShader;
-			std::shared_ptr<shader::SunShader> defaultShader;
-			std::shared_ptr<texture::TextureUnit> defaultTexture;
+			static std::shared_ptr<shader::SunShader> defaultShader;
+			static std::shared_ptr<texture::TextureUnit> defaultTexture;
 			std::shared_ptr<TerrainUnit> terrain;
 			std::vector<std::shared_ptr<SkyBoxUnit>> skies;
 			unsigned int currentCameraIndex;

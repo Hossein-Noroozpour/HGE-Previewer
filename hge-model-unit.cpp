@@ -10,7 +10,7 @@ hge::math::ModelUnit::ModelUnit():
 {
 }
 
-void hge::math::ModelUnit::ModelUnit::translate (const math::Vector3D<> &trn)
+void hge::math::ModelUnit::translate (const math::Vector3D<> &trn)
 {
 	location += trn;
 	rotateScaleTranslateMatrix = rotateScaleTranslateMatrix * Matrix4D<>::translate(trn);

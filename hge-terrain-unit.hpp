@@ -2,6 +2,7 @@
 #define	HGETERRAINUNIT_HPP
 #include <string>
 #include <vector>
+#include "hge-mesh-unit.hpp"
 #include "hge-model-unit.hpp"
 #include "hge-shader-unit.hpp"
 #include "hge-texture-unit.hpp"
@@ -16,12 +17,7 @@ namespace hge
 		{
 		public:
 			TerrainUnit();
-			TerrainUnit(
-					const int16_t *const &heights,
-					const int &aspect,
-					const double &verticalDegree,
-					const double &horizontalDegree);
-			TerrainUnit(const unsigned int &size, unsigned char *const &data);
+			TerrainUnit(const int16_t *const &heights, const int &aspect, const double &verticalDegree, const double &horizontalDegree);
 			virtual ~TerrainUnit();
 			virtual void draw(const math::Matrix4D<> &vp);
 			///\warning This function does not delete vertices pointer and caller must take care of it.

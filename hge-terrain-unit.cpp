@@ -1,23 +1,24 @@
 #include "hge-terrain-unit.hpp"
 #include "hge-camera-unit.hpp"
-#include "hge-protocol.hpp"
 #include <iostream>
 #include <thread>
 #include <mutex>
 #include <functional>
-#ifdef ANDROID
-#define NUMBEROFLODS 1
-#else
-#define NUMBEROFLODS 4
-#endif
+
 #ifdef _WIN32
 #define M_PI 3.1415926535897932384626433832795
 #endif
 #define NORMALCALCULATIONDEBUGMODE
 //#define NORMALCALCULATIONDEBUGMOD2
+
 #define NUMBEROFBUFFERCOMPONENTS 12
+
+#define NUMBEROFLODS 4
+
 #define HGEPRINTCODELINE std::cout << "Debugging: file:" << __FILE__ << " line:" << __LINE__ << std::endl << std::flush;
+
 #define PRINTVECTOR(v) std::cout << " x: " << v.x << " y: " << v.y << " z: " << v.z << std::endl;
+
 #define NORMALCALCULATIONDEBUGPRINT \
 if(tmpv.z < 0.0)\
 {\
@@ -25,6 +26,7 @@ if(tmpv.z < 0.0)\
 	HGEPRINTCODELINE\
 	std::terminate();\
 }
+
 #define CHECKLENGTHZERO \
 if(glm::length(tmpv1) == 0.0)\
 {\
@@ -34,10 +36,14 @@ if(glm::length(tmpv1) == 0.0)\
 	HGEPRINTCODELINE \
 	std::terminate();\
 }
+
 #define D1toD2(arr, row, col) arr[(row * width) + col]
+
 //#define HGETERRAINLOADINGDEBUGMODE
+
 hge::render::TerrainUnit::TerrainUnit()
 {}
+
 hge::render::TerrainUnit::TerrainUnit(const int16_t *const &heights, const int &aspect,
 		const double &verticalDegree, const double &horizontalDegree)
 {
@@ -65,40 +71,7 @@ hge::render::TerrainUnit::TerrainUnit(const int16_t *const &heights, const int &
 	delete [] ibo;
 	delete [] vbo;
 }
-hge::render::TerrainUnit::TerrainUnit(const unsigned int &size, unsigned char * const &data)
-{
-	GLuint aspect = GLuint(((core::Protocol::terrain_aspect_type *)data)[0]);
-	GLuint vbo_components_count = ((core::Protocol::terrain_vbo_components_count_type *)(data + sizeof(core::Protocol::terrain_aspect_type)))[0];
-	if(size != aspect * aspect * vbo_components_count * sizeof(GLfloat) +
-			sizeof(core::Protocol::terrain_aspect_type) +
-			sizeof(core::Protocol::terrain_vbo_components_count_type))
-	{
-		throw std::string("Error in Size");
-	}
-	GLuint *ibo = new GLuint[(aspect - 1) * (aspect - 1) * 6];
-	for(int l = 0, iboIndex = 0; l < NUMBEROFLODS; l++)
-	{
-		iboIndex = 0;
-		for(unsigned int i = 0, lStride = 1 << l; i < aspect - lStride; i += lStride)
-		{
-			for(unsigned int j = 0; j < aspect - lStride; j += lStride)
-			{
-				ibo[iboIndex++] = GLuint(( i            * aspect) + j          );
-				ibo[iboIndex++] = GLuint(((i + lStride) * aspect) + j          );
-				ibo[iboIndex++] = GLuint(((i + lStride) * aspect) + j + lStride);
-				ibo[iboIndex++] = GLuint(( i            * aspect) + j          );
-				ibo[iboIndex++] = GLuint(((i + lStride) * aspect) + j + lStride);
-				ibo[iboIndex++] = GLuint(( i            * aspect) + j + lStride);
-			}
-		}
-		addIBO(ibo, iboIndex * sizeof(GLuint));
-	}
-	setVBO((GLfloat *)(data +
-					   sizeof(core::Protocol::terrain_aspect_type) +
-					   sizeof(core::Protocol::terrain_vbo_components_count_type)),
-		   aspect * aspect * vbo_components_count * sizeof(GLfloat));
-	delete [] ibo;
-}
+
 void hge::render::TerrainUnit::calculateNTBs(const int &aspect, const double &verticalDegree, const double &horizontalDegree, GLfloat *vbo, const int16_t *const &heights)
 {
 	(void)horizontalDegree;

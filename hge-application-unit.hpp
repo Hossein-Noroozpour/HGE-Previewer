@@ -1,7 +1,13 @@
-#ifndef HGEAPPLICATION_HPP
-#define HGEAPPLICATION_HPP
+#ifndef HGE_APPLICATION_UNIT_HPP_
+#define HGE_APPLICATION_UNIT_HPP_
+#include <string>
+#include <memory>
 namespace hge
 {
+	namespace render
+	{
+		class TerrainUnit;
+	}
 	namespace core
 	{
 		class ApplicationUnit
@@ -29,10 +35,10 @@ namespace hge
 				aKeyButton,
 				dKeyButton
 			};
-			/// WARNING: This function will be called in starting process of
+			/// \warning this function will be called in starting process of
 			/// do not call any OpenGL function in it.
 			virtual void start() = 0;
-			/// NOTE: This function will be called in OpenGL initializing
+			/// \note this function will be called in OpenGL initializing
 			/// procedure.
 			virtual void initialize() = 0;
 			/// this function will be called in every frame update
@@ -42,8 +48,6 @@ namespace hge
 			virtual void buttonPressed(const HGEButton& key) = 0;
 			virtual void buttonReleased(const HGEButton& key) = 0;
 			virtual void mouseMoved(const float& dx, const float& dy) = 0;
-			/// New data is a bundle of data that recieved to the application
-			virtual void newData(const unsigned int &size, unsigned char *const &data) = 0;
 		};
 	}
 }
