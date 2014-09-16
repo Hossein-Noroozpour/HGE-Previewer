@@ -11,6 +11,7 @@
 #include <GL/gl.h>
 #endif
 #include <istream>
+#define HGE_TEXTURE_PRINT_INFO
 namespace hge
 {
 	namespace texture

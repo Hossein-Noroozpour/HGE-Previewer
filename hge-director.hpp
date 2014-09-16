@@ -11,10 +11,8 @@ namespace hge
 		class Director : public ApplicationUnit
 		{
 		private:
-			std::mutex new_data_lock;
 			std::mutex gldo_lock;
 			std::vector<std::function<void(void)>> gldo;
-			std::vector<unsigned int> object_ids;
 			std::shared_ptr<hge::render::SceneUnit> scene;
 			bool goForward;
 			bool goDownward;
@@ -22,8 +20,8 @@ namespace hge
 			bool goLeftward;
 			bool rotateOn;
 			bool wireframeMode;
-			float m_cameraRotationSpeed;
-			float m_cameraMoveSpeed;
+			float cameraRotationSpeed;
+			float cameraMoveSpeed;
 		public:
 			Director();
 			~Director();
@@ -33,7 +31,6 @@ namespace hge
 			void buttonPressed(const HGEButton& key);
 			void buttonReleased(const HGEButton& key);
 			void mouseMoved(const float &dx, const float &dy);
-			void newData(const unsigned int &size, unsigned char *const &data);
 		};
 	}
 }

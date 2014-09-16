@@ -1,1 +1,0 @@
-#include "hge-application.hpp"

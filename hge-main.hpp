@@ -16,7 +16,7 @@ class MyGame : public hge::core::ApplicationUnit
 {
 public:
 	MyGame();
-	virtual ~MyGame();
+	~MyGame();
 	void start();
 	void initialize();
 	void update();
@@ -32,8 +32,8 @@ private:
 	bool goRightward;
 	bool goLeftward;
 	bool wireframeMode;
-	float m_cameraRotationSpeed;
-	float m_cameraMoveSpeed;
+	float cameraRotationSpeed;
+	float cameraMoveSpeed;
 	void swapBytes(unsigned char *const& bytes, const unsigned int &size);
 };
 #ifdef ANDROID

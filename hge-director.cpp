@@ -14,8 +14,8 @@ hge::core::Director::Director():
 	goLeftward(false),
 	rotateOn(false),
 	wireframeMode(false),
-	m_cameraRotationSpeed(0.001f),
-	m_cameraMoveSpeed(5.0f)
+	cameraRotationSpeed(0.001f),
+	cameraMoveSpeed(5.0f)
 {
 }
 hge::core::Director::~Director()
@@ -23,16 +23,6 @@ hge::core::Director::~Director()
 }
 void hge::core::Director::start()
 {
-}
-static void swapBytes(unsigned char * const &bytes, const unsigned int &size)
-{
-	unsigned char tmpuc;
-	for(unsigned int i = 0, j = size - 1; i < j; i++, j--)
-	{
-		tmpuc = bytes[i];
-		bytes[i] = bytes[j];
-		bytes[j] = tmpuc;
-	}
 }
 void hge::core::Director::initialize()
 {
@@ -49,22 +39,22 @@ void hge::core::Director::update()
 	gldo_lock.unlock();
 	if(goForward)
 	{
-		scene->getCamera()->moveForward(m_cameraMoveSpeed);
+		scene->getCamera()->moveForward(cameraMoveSpeed);
 		//terrainShader->setCameraPositionRelativeToModel(scene->getCamera()->getLocation());
 	}
 	if(goDownward)
 	{
-		scene->getCamera()->moveForward(-m_cameraMoveSpeed);
+		scene->getCamera()->moveForward(-cameraMoveSpeed);
 		//terrainShader->setCameraPositionRelativeToModel(scene->getCamera()->getLocation());
 	}
 	if(goRightward)
 	{
-		scene->getCamera()->moveSideward(m_cameraMoveSpeed);
+		scene->getCamera()->moveSideward(cameraMoveSpeed);
 		//terrainShader->setCameraPositionRelativeToModel(scene->getCamera()->getLocation());
 	}
 	if(goLeftward)
 	{
-		scene->getCamera()->moveSideward(-m_cameraMoveSpeed);
+		scene->getCamera()->moveSideward(-cameraMoveSpeed);
 		//terrainShader->setCameraPositionRelativeToModel(scene->getCamera()->getLocation());
 	}
 	scene->draw();
@@ -87,10 +77,10 @@ void hge::core::Director::buttonPressed(const HGEButton& key)
 			}
 			break;
 		case(PageUpButton):
-			m_cameraMoveSpeed *= 2;
+			cameraMoveSpeed *= 2;
 			break;
 		case(PageDownButton):
-			m_cameraMoveSpeed /= 2;
+			cameraMoveSpeed /= 2;
 			break;
 		case(wKeyButton):
 			goForward = true;
@@ -138,10 +128,7 @@ void hge::core::Director::mouseMoved(const float &dx, const float &dy)
 {
 	if(rotateOn)
 	{
-		scene->getCamera()->rotateGlobalZ(dx * m_cameraRotationSpeed);
-		scene->getCamera()->rotateLocalX(dy * m_cameraRotationSpeed);
+		scene->getCamera()->rotateGlobalZ(dx * cameraRotationSpeed);
+		scene->getCamera()->rotateLocalX(dy * cameraRotationSpeed);
 	}
-}
-void hge::core::Director::newData(const unsigned int &size, unsigned char *const &data)
-{
 }

@@ -1,13 +1,11 @@
 #include "hge-glfw-window.hpp"
 #include <iostream>
 #define HGETERMINATE std::cerr << "Termination in line: " << __LINE__ << " file: " << __FILE__ << std::endl; throw std::string("Termination.");
-std::shared_ptr<hge::core::Application> hge::ui::HGEGLFWWindow::application;
+#define HGETESTWINDOW
+std::shared_ptr<hge::core::ApplicationUnit> hge::ui::HGEGLFWWindow::application;
 double hge::ui::HGEGLFWWindow::lastCursorXposition = 0.0;
 double hge::ui::HGEGLFWWindow::lastCursorYposition = 0.0;
-void
-hge::ui::HGEGLFWWindow::onErrorEvent
-(int errorNumber,
-		const char* errorDescription)
+void hge::ui::HGEGLFWWindow::onErrorEvent(int errorNumber, const char* errorDescription)
 {
 	std::cerr << "Error number is: "
 			<< errorNumber
@@ -17,9 +15,7 @@ hge::ui::HGEGLFWWindow::onErrorEvent
 			<< std::endl;
 	HGETERMINATE
 }
-void
-hge::ui::HGEGLFWWindow::onKeyEvent
-(GLFWwindow* window, int key, int scanCode, int action, int mods)
+void hge::ui::HGEGLFWWindow::onKeyEvent(GLFWwindow* window, int key, int scanCode, int action, int mods)
 {
 	switch(action)
 	{
@@ -30,37 +26,37 @@ hge::ui::HGEGLFWWindow::onKeyEvent
 					glfwSetWindowShouldClose(window, GL_TRUE);
 					break;
 				case(GLFW_KEY_F1):
-					application->buttonPressed(core::Application::F1KeyButton);
+					application->buttonPressed(core::ApplicationUnit::F1KeyButton);
 					break;
 				case(GLFW_KEY_W):
-					application->buttonPressed(core::Application::wKeyButton);
+					application->buttonPressed(core::ApplicationUnit::wKeyButton);
 					break;
 				case(GLFW_KEY_A):
-					application->buttonPressed(core::Application::aKeyButton);
+					application->buttonPressed(core::ApplicationUnit::aKeyButton);
 					break;
 				case(GLFW_KEY_S):
-					application->buttonPressed(core::Application::sKeyButton);
+					application->buttonPressed(core::ApplicationUnit::sKeyButton);
 					break;
 				case(GLFW_KEY_D):
-					application->buttonPressed(core::Application::dKeyButton);
+					application->buttonPressed(core::ApplicationUnit::dKeyButton);
 					break;
 				case(GLFW_KEY_UP):
-					application->buttonPressed(core::Application::upArrowKeyButton);
+					application->buttonPressed(core::ApplicationUnit::upArrowKeyButton);
 					break;
 				case(GLFW_KEY_DOWN):
-					application->buttonPressed(core::Application::downArrowKeyButton);
+					application->buttonPressed(core::ApplicationUnit::downArrowKeyButton);
 					break;
 				case(GLFW_KEY_LEFT):
-					application->buttonPressed(core::Application::leftArrowKeyButton);
+					application->buttonPressed(core::ApplicationUnit::leftArrowKeyButton);
 					break;
 				case(GLFW_KEY_RIGHT):
-					application->buttonPressed(core::Application::rightArrowKeyButton);
+					application->buttonPressed(core::ApplicationUnit::rightArrowKeyButton);
 					break;
 				case(GLFW_KEY_PAGE_UP):
-					application->buttonPressed(core::Application::PageUpButton);
+					application->buttonPressed(core::ApplicationUnit::PageUpButton);
 					break;
 				case(GLFW_KEY_PAGE_DOWN):
-					application->buttonPressed(core::Application::PageDownButton);
+					application->buttonPressed(core::ApplicationUnit::PageDownButton);
 					break;
 				default:
 					break;
@@ -72,28 +68,28 @@ hge::ui::HGEGLFWWindow::onKeyEvent
 				case(GLFW_KEY_ESCAPE):
 					break;
 				case(GLFW_KEY_W):
-					application->buttonReleased(core::Application::wKeyButton);
+					application->buttonReleased(core::ApplicationUnit::wKeyButton);
 					break;
 				case(GLFW_KEY_A):
-					application->buttonReleased(core::Application::aKeyButton);
+					application->buttonReleased(core::ApplicationUnit::aKeyButton);
 					break;
 				case(GLFW_KEY_S):
-					application->buttonReleased(core::Application::sKeyButton);
+					application->buttonReleased(core::ApplicationUnit::sKeyButton);
 					break;
 				case(GLFW_KEY_D):
-					application->buttonReleased(core::Application::dKeyButton);
+					application->buttonReleased(core::ApplicationUnit::dKeyButton);
 					break;
 				case(GLFW_KEY_UP):
-					application->buttonReleased(core::Application::upArrowKeyButton);
+					application->buttonReleased(core::ApplicationUnit::upArrowKeyButton);
 					break;
 				case(GLFW_KEY_DOWN):
-					application->buttonReleased(core::Application::downArrowKeyButton);
+					application->buttonReleased(core::ApplicationUnit::downArrowKeyButton);
 					break;
 				case(GLFW_KEY_LEFT):
-					application->buttonReleased(core::Application::leftArrowKeyButton);
+					application->buttonReleased(core::ApplicationUnit::leftArrowKeyButton);
 					break;
 				case(GLFW_KEY_RIGHT):
-					application->buttonReleased(core::Application::rightArrowKeyButton);
+					application->buttonReleased(core::ApplicationUnit::rightArrowKeyButton);
 					break;
 				default:
 					break;
@@ -113,13 +109,13 @@ void hge::ui::HGEGLFWWindow::onMouseKeyEvent(GLFWwindow* window, int button, int
 			switch(button)
 			{
 				case GLFW_MOUSE_BUTTON_LEFT:
-					application->buttonPressed(core::Application::leftMouseButton);
+					application->buttonPressed(core::ApplicationUnit::leftMouseButton);
 					break;
 				case GLFW_MOUSE_BUTTON_RIGHT:
-					application->buttonPressed(core::Application::rightMouseButton);
+					application->buttonPressed(core::ApplicationUnit::rightMouseButton);
 					break;
 				case GLFW_MOUSE_BUTTON_MIDDLE:
-					application->buttonPressed(core::Application::middleMouseButton);
+					application->buttonPressed(core::ApplicationUnit::middleMouseButton);
 					break;
 				default:
 					break;
@@ -129,13 +125,13 @@ void hge::ui::HGEGLFWWindow::onMouseKeyEvent(GLFWwindow* window, int button, int
 			switch(button)
 			{
 				case GLFW_MOUSE_BUTTON_LEFT:
-					application->buttonReleased(core::Application::leftMouseButton);
+					application->buttonReleased(core::ApplicationUnit::leftMouseButton);
 					break;
 				case GLFW_MOUSE_BUTTON_RIGHT:
-					application->buttonReleased(core::Application::rightMouseButton);
+					application->buttonReleased(core::ApplicationUnit::rightMouseButton);
 					break;
 				case GLFW_MOUSE_BUTTON_MIDDLE:
-					application->buttonReleased(core::Application::middleMouseButton);
+					application->buttonReleased(core::ApplicationUnit::middleMouseButton);
 					break;
 				default:
 					break;
@@ -145,22 +141,17 @@ void hge::ui::HGEGLFWWindow::onMouseKeyEvent(GLFWwindow* window, int button, int
 			break;
 	}
 }
-void
-hge::ui::HGEGLFWWindow::onCursorMoveEvent(GLFWwindow* window, double x, double y)
+void hge::ui::HGEGLFWWindow::onCursorMoveEvent(GLFWwindow* window, double x, double y)
 {
 	application->mouseMoved((float)(x - lastCursorXposition),(float)(y - lastCursorYposition));
 	lastCursorXposition = x;
 	lastCursorYposition = y;
 }
-void
-hge::ui::HGEGLFWWindow::onChangeSizeEvent
-(GLFWwindow* window, int width, int height)
+void hge::ui::HGEGLFWWindow::onChangeSizeEvent(GLFWwindow* window, int width, int height)
 {
 	glViewport(0, 0, width, height);
 }
-void
-hge::ui::HGEGLFWWindow::start
-(const std::shared_ptr<hge::core::Application>& app)
+void hge::ui::HGEGLFWWindow::start(const std::shared_ptr<hge::core::ApplicationUnit>& app)
 {
 	application = app;
 	application->start();
@@ -172,7 +163,11 @@ hge::ui::HGEGLFWWindow::start
 	}
 	auto priMon = glfwGetPrimaryMonitor();
 	auto vidMod = glfwGetVideoMode(priMon);
+#ifdef HGETESTWINDOW
+	window = glfwCreateWindow(750, 500, "Hulixerian Game Engine", 0, NULL);
+#else
 	window = glfwCreateWindow(vidMod->width, vidMod->height, "Hulixerian Game Engine", priMon, NULL);
+#endif
 	if (!window)
 	{
 		glfwTerminate();
@@ -195,7 +190,9 @@ hge::ui::HGEGLFWWindow::start
 	glViewport(0, 0, vidMod->width, vidMod->height);
 	application->initialize();
 	glfwSetFramebufferSizeCallback(window, onChangeSizeEvent);
+#ifndef HGETESTWINDOW
 	glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+#endif
 	while(!glfwWindowShouldClose(window))
 	{
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
@@ -207,8 +204,7 @@ hge::ui::HGEGLFWWindow::start
 	glfwDestroyWindow(window);
 	glfwTerminate();
 }
-void
-hge::ui::HGEGLFWWindow::printOpenGLErrorAndTerminate()
+void hge::ui::HGEGLFWWindow::printOpenGLErrorAndTerminate()
 {
 	switch(glGetError())
 	{

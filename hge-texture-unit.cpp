@@ -42,6 +42,13 @@ textureTarget(textureTarget)
 	png_uint_32 bitdepth = png_get_bit_depth(pngPtr, infoPtr);
 	png_uint_32 channels = png_get_channels(pngPtr, infoPtr);
 	png_uint_32 color_type = png_get_color_type(pngPtr, infoPtr);
+#ifdef HGE_TEXTURE_PRINT_INFO
+	std::cout << "Image width " << imgHeight << std::endl;
+	std::cout << "Image height " << imgWidth << std::endl;
+	std::cout << "Image bit depth " << bitdepth << std::endl;
+	std::cout << "Image channels " << channels << std::endl;
+	std::cout << "Image color type " << color_type << std::endl;
+#endif
 	switch (color_type)
 	{
 	case PNG_COLOR_TYPE_GA:
