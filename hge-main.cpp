@@ -3,6 +3,8 @@
  * Email: Hossein.Noroozpour@gmail.com
  */
 #include "hge-main.hpp"
+#include "hge-director.hpp"
+#include <memory>
 #include <fstream>
 #include <iostream>
 #ifdef ANDROID
@@ -32,37 +34,23 @@ int main(int argc, char *argv[])
 {
 	(void)argc;
 	(void)argv;
-	std::shared_ptr<hge::core::ApplicationUnit> app(new MyGame());
+	std::shared_ptr<hge::core::ApplicationUnit> app(new hge::core::Director());
 	hge::ui::HGEGLFWWindow::start(app);
 	return 0;
 }
 #endif
-MyGame::MyGame()
-{}
-MyGame::~MyGame()
-{}
-void MyGame::start()
-{}
-void MyGame::initialize()
+
+
+
+/*std::string logoFileAddress("C:\\Users\\Thany Hulixer\\Documents\\Visual Studio 2013\\Projects\\HGE-Previewer\\x64\\Debug\\HGE-Logo1024x1024.png");
+std::ifstream logoFileStream;
+logoFileStream.open(logoFileAddress, std::ios_base::binary);
+if (logoFileStream.is_open())
 {
-	std::string logoFileAddress("C:\\Users\\Thany Hulixer\\Documents\\Visual Studio 2013\\Projects\\HGE-Previewer\\x64\\Debug\\HGE-Logo1024x1024.png");
-	std::ifstream logoFileStream;
-	logoFileStream.open(logoFileAddress, std::ios_base::binary);
-	if (logoFileStream.is_open())
-	{
-		std::shared_ptr<hge::texture::TextureUnit> logoTexture(new hge::texture::TextureUnit(GL_TEXTURE_2D, logoFileStream));
-	}
-	else
-	{
-		std::cerr << "Error in logo file opening process." << std::endl;
-		std::terminate();
-	}
+	std::shared_ptr<hge::texture::TextureUnit> logoTexture(new hge::texture::TextureUnit(GL_TEXTURE_2D, logoFileStream));
 }
-void MyGame::update()
-{}
-void MyGame::buttonPressed(const HGEButton& key)
-{}
-void MyGame::buttonReleased(const HGEButton& key)
-{}
-void MyGame::mouseMoved(const float& dx, const float& dy)
-{}
+else
+{
+	std::cerr << "Error in logo file opening process." << std::endl;
+	std::terminate();
+}*/

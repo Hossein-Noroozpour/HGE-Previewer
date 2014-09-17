@@ -114,3 +114,41 @@ hge::render::GeometryUnit::setOcclusionQueryMesh(const std::shared_ptr<MeshUnit>
 	occlusionQueryMesh = m;
 }
 #endif
+void hge::render::GeometryUnit::setData(std::istream &stream, const core::Protocol::ObjectSizeType &size, const bool &endianCompatible)
+{
+	auto beginPos = stream.tellg();
+	/// ID
+	core::Protocol::StringLengthType idStringLength;
+	stream.read((char *)(&idStringLength), sizeof idStringLength);
+	if (!endianCompatible) swapObject((char *)(&idStringLength), sizeof idStringLength);
+	char *idChars = new char[idStringLength];
+	stream.read(idChars, idStringLength);
+	id = std::string(idChars, idStringLength);
+	delete [] idChars;
+	/// Name
+	core::Protocol::StringLengthType nameStringLength;
+	stream.read((char *)(&nameStringLength), sizeof nameStringLength);
+	if (!endianCompatible) swapObject((char *)(&nameStringLength), sizeof nameStringLength);
+	char *nameChars = new char[nameStringLength];
+	stream.read(nameChars, nameStringLength);
+	id = std::string(nameChars, nameStringLength);
+	delete[] nameChars;
+	/// Mesh
+	core::Protocol::IdType meshId;
+	stream.read((char *)(&meshId), sizeof meshId);
+	//if (!endianCompatible) swapObject((char *)(&meshId), sizeof meshId);
+	core::Protocol::ObjectSizeType meshSize;
+	stream.read((char *)(&meshSize), sizeof meshSize);
+	if (!endianCompatible) swapObject((char *)(&meshSize), sizeof meshSize);
+	mesh = std::shared_ptr<MeshUnit>(new MeshUnit());
+	mesh->setData(stream, meshSize, endianCompatible);
+	if (stream.tellg() - beginPos < size)
+	{
+		stream.read((char *)(&meshId), sizeof meshId);
+		//if (!endianCompatible) swapObject((char *)(&meshId), sizeof meshId);
+		stream.read((char *)(&meshSize), sizeof meshSize);
+		if (!endianCompatible) swapObject((char *)(&meshSize), sizeof meshSize);
+		occlusionQueryMesh = std::shared_ptr<MeshUnit>(new MeshUnit());
+		occlusionQueryMesh->setData(stream, meshSize, endianCompatible);
+	}
+}

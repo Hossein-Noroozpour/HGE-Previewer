@@ -1,4 +1,4 @@
-#if defined(WIN64) || defined(WIN32) || defined(LINUX)
+#if defined(_WIN64) || defined(_WIN32) || defined(LINUX)
 #define HGE_USE_OPENGL_43
 //#define HGE_USE_OPENGL_42
 //#define HGE_USE_OPENGL_41

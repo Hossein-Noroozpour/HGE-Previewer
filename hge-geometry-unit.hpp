@@ -1,13 +1,14 @@
 #ifndef HGE_GEOMETRY_UNIT_HPP
 #define HGE_GEOMETRY_UNIT_HPP
 #include "hge-configure.hpp"
-#include <string.h>
 #include "hge-mesh-unit.hpp"
 #include "hge-model-unit.hpp"
 #include "hge-shader-unit.hpp"
 #include "hge-texture-unit.hpp"
 #include "hge-math.hpp"
+#include "hge-data-object.hpp"
 #include <memory>
+#include <string.h>
 //#define HGEGEOMETRYDEBUGMVPVALUECHECK
 #ifdef HGE_BASIC_QUERY_SUPPORT
 #define HGEGEOMETRYNUMBEROFQUERIES 2
@@ -18,7 +19,7 @@ namespace hge
 {
 	namespace render
 	{
-		class GeometryUnit
+		class GeometryUnit : public core::DataObject
 		{
 		public:
 			GeometryUnit(const std::string& id, const std::string& name);
@@ -38,25 +39,23 @@ namespace hge
 			void setTexture(const std::shared_ptr<texture::TextureUnit>& texture);
 			math::ModelUnit* getModelMatrix();
 			std::shared_ptr<MeshUnit> getMesh();
+			void setData(std::istream &stream, const core::Protocol::ObjectSizeType &size, const bool &endianCompatible = true);
+			core::Protocol::ObjectTypeIdType getTypeId();
+			void setDataId(const core::Protocol::IdType &id);
+			core::Protocol::IdType getDataId();
 		private:
-#ifdef HGE_BASIC_QUERY_SUPPORT
-			GLuint queries[HGEGEOMETRYNUMBEROFQUERIES];
-#endif
 			std::string id;
 			std::string name;
-#ifdef HGE_BASIC_QUERY_SUPPORT
-			math::Matrix4D<> mvp;
-#endif
 			math::ModelUnit modelMatrix;
 			std::shared_ptr<MeshUnit> mesh;
-#ifdef HGE_BASIC_QUERY_SUPPORT
-			std::shared_ptr<MeshUnit> occlusionQueryMesh;
-#endif
 			std::shared_ptr<shader::ShaderUnit> shader;
+			std::shared_ptr<texture::TextureUnit> texture;
 #ifdef HGE_BASIC_QUERY_SUPPORT
+			GLuint queries[HGEGEOMETRYNUMBEROFQUERIES];
+			math::Matrix4D<> mvp;
+			std::shared_ptr<MeshUnit> occlusionQueryMesh;
 			std::shared_ptr<shader::ShaderUnit> occlusionQueryShader;
 #endif
-			std::shared_ptr<texture::TextureUnit> texture;
 		};
 	}
 }

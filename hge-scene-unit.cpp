@@ -1,3 +1,4 @@
+#include "hge-configure.hpp"
 #include "hge-scene-unit.hpp"
 #include "hge-white-shader.hpp"
 #include <iostream>
@@ -16,7 +17,7 @@ hge::render::SceneUnit::SceneUnit():
 void hge::render::SceneUnit::addGeometry(const std::shared_ptr<GeometryUnit>& geometry)
 {
 	hasGeometry = true;
-#ifdef GL_ES_VERSION_3_0
+#ifdef HGE_BASIC_QUERY_SUPPORT
 	geometry->setOcclusionQueryShader(occlusionQueryShader);
 #endif
 	geometry->setShader(defaultShader);
@@ -72,7 +73,7 @@ std::shared_ptr<hge::render::GeometryUnit> hge::render::SceneUnit::getGeoByID(co
 			return geometries[i];
 		}
 	}
-	HGEPRINTCODELINE
+	HGEPRINTCODELINE;
 	std::cout << "Geo Not found!" << std::endl;
 	return nullptr;
 }

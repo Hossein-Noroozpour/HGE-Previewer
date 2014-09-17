@@ -19,8 +19,6 @@ namespace hge
 			std::vector<std::shared_ptr<math::CameraUnit>> cameras;
 			std::vector<std::shared_ptr<math::PerspectiveUnit>> perspectives;
 			std::shared_ptr<shader::ShaderUnit> occlusionQueryShader;
-			static std::shared_ptr<shader::SunShader> defaultShader;
-			static std::shared_ptr<texture::TextureUnit> defaultTexture;
 			std::shared_ptr<TerrainUnit> terrain;
 			std::vector<std::shared_ptr<SkyBoxUnit>> skies;
 			unsigned int currentCameraIndex;
@@ -36,6 +34,9 @@ namespace hge
 			std::shared_ptr<GeometryUnit> getGeoByID(const std::string& id);
 			std::shared_ptr<math::CameraUnit> getCamera(const unsigned int& cameraIndex = 0);
 			std::shared_ptr<SkyBoxUnit> getSky(const unsigned int& skyIndex = 0);
+
+			static std::shared_ptr<shader::SunShader> defaultShader;
+			static std::shared_ptr<texture::TextureUnit> defaultTexture;
 		};
 	}
 }

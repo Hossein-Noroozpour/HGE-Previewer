@@ -3,6 +3,7 @@
 #include "hge-terrain-sun-shader.hpp"
 #include "hge-protocol.hpp"
 #include "hge-skybox-shader-unit.hpp"
+#include "hge-resource-manager.hpp"
 #include <thread>
 #include <iostream>
 #include <fstream>
@@ -26,7 +27,24 @@ void hge::core::Director::start()
 }
 void hge::core::Director::initialize()
 {
-	
+	/// Testing part
+	std::string logoFileAddress("C:\\Users\\Thany Hulixer\\Documents\\Visual Studio 2013"
+		"\\Projects\\HGE-Previewer\\x64\\Debug\\HGE-Logo1024x1024.png");
+	std::ifstream logoFileStream;
+	logoFileStream.open(logoFileAddress, std::ios_base::binary);
+	if (logoFileStream.is_open())
+	{
+		std::shared_ptr<hge::texture::TextureUnit> logoTexture(new hge::texture::TextureUnit(GL_TEXTURE_2D, logoFileStream));
+		render::SceneUnit::defaultTexture = logoTexture;
+	}
+	else
+	{
+		std::cerr << "Error in logo file opening process." << std::endl;
+		std::terminate();
+	}
+	render::SceneUnit::defaultShader = std::shared_ptr<shader::SunShader>(new shader::SunShader());
+	/////////////////////////////////////////////////////////////////
+	scene = ResourceManager::importScene("");
 }
 void hge::core::Director::update()
 {
