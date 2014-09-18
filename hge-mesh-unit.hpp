@@ -39,7 +39,7 @@ namespace hge
 			void draw();
 			GLuint getVBO();
 			GLuint getIBO();
-			void setData(std::istream &stream, const core::Protocol::ObjectSizeType &size, const bool &endianCompatible = true);
+			void setData(std::istream &stream, const bool &endianCompatible = true);
 		private:
 			GLuint vbo, ibo, vboSize, vboElementsNumber, iboSize, numberOfIndices;
 		};

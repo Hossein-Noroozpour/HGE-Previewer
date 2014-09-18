@@ -13,7 +13,7 @@ namespace hge
 			{
 				IncompatibleDataSize
 			};
-			virtual void setData(std::istream &stream, const Protocol::ObjectSizeType &size, const bool &endianCompatible = true) = 0;
+			virtual void setData(std::istream &stream, const bool &endianCompatible = true) = 0;
 			static void swapObject(char *const &data, const unsigned int &size);
 		private:
 		};

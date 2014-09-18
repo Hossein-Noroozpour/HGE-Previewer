@@ -178,7 +178,7 @@ void hge::ui::HGEGLFWWindow::start(const std::shared_ptr<hge::core::ApplicationU
 	{
 		HGETERMINATE
 	}
-	glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
+	glClearColor(0.5f, 0.5f, 0.5f, 1.0f);
 	glEnable(GL_CULL_FACE);
 	glEnable(GL_DEPTH_TEST);
 	glEnable(GL_SCISSOR_TEST);

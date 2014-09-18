@@ -124,24 +124,38 @@ hge::render::MeshUnit::getIBO()
 {
 	return ibo;
 }
-void hge::render::MeshUnit::setData(std::istream &stream, const core::Protocol::ObjectSizeType &size, const bool &endianCompatible)
+void hge::render::MeshUnit::setData(std::istream &stream, const bool &endianCompatible)
 {
-	core::Protocol::VerticesElementsCountType verticesCount;
+	core::Protocol::Types::VerticesElementsCountType verticesCount;
 	stream.read((char *)(&verticesCount), sizeof verticesCount);
 	if (!endianCompatible) swapObject((char *)(&verticesCount), sizeof verticesCount);
+#ifdef HGE_TEST_MODE
+	std::cout << __FILE__ << ": Vertices count: " << verticesCount << std::endl;
+#endif
 	GLfloat *vertices = new GLfloat[verticesCount];
 	stream.read((char *)(vertices), sizeof(GLfloat) * verticesCount);
 	if (!endianCompatible)
-		for (core::Protocol::VerticesElementsCountType i = 0; i < verticesCount; i++)
+	{
+		for (core::Protocol::Types::VerticesElementsCountType i = 0; i < verticesCount; i++)
+		{
 			swapObject((char *)(&vertices[i]), sizeof GLfloat);
-	core::Protocol::IndicesCountType indicesCount;
+		}
+	}
+	core::Protocol::Types::IndicesCountType indicesCount;
 	stream.read((char *)(&indicesCount), sizeof indicesCount);
 	if (!endianCompatible) swapObject((char *)(&indicesCount), sizeof indicesCount);
+#ifdef HGE_TEST_MODE
+	std::cout << __FILE__ << ": Indices count: " << indicesCount << std::endl;
+#endif
 	GLuint *indices = new GLuint[indicesCount];
 	stream.read((char *)(indices), sizeof(GLuint) * indicesCount);
 	if (!endianCompatible)
-		for (core::Protocol::IndicesCountType i = 0; i < indicesCount; i++)
+	{
+		for (core::Protocol::Types::IndicesCountType i = 0; i < indicesCount; i++)
+		{
 			swapObject((char *)(&indices[i]), sizeof GLuint);
+		}
+	}
 	if (vbo != 0)
 	{
 		glBindBuffer(GL_ARRAY_BUFFER, 0);

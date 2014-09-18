@@ -44,8 +44,8 @@ hge::render::SceneUnit::draw()
 	if(hasGeometry)
 	{
 #ifdef HGE_BASIC_QUERY_SUPPORT
-		glColorMask(GL_FALSE, GL_FALSE, GL_FALSE, GL_FALSE);
-		glDepthMask(GL_FALSE);
+		/*glColorMask(GL_FALSE, GL_FALSE, GL_FALSE, GL_FALSE);
+		glDepthMask(GL_FALSE);*/
 		geometries[0]->occlusionQueryStarter(vp);
 		for(unsigned int i = 1; i < geometries.size(); i++)
 		{
@@ -64,17 +64,17 @@ hge::render::SceneUnit::draw()
 		}
 	}
 }
-std::shared_ptr<hge::render::GeometryUnit> hge::render::SceneUnit::getGeoByID(const std::string& id)
+std::shared_ptr<hge::render::GeometryUnit> hge::render::SceneUnit::getGeoByID(const core::Protocol::Types::IdType &id)
 {
 	for(unsigned int i = 0; i < geometries.size(); i++)
 	{
-		if(geometries[i]->isThisYourID(id))
+		if(geometries[i]->getDataId() == id)
 		{
 			return geometries[i];
 		}
 	}
-	HGEPRINTCODELINE;
 	std::cout << "Geo Not found!" << std::endl;
+	HGEPRINTCODELINE; 
 	return nullptr;
 }
 void hge::render::SceneUnit::setTerrain(const std::shared_ptr<TerrainUnit>& t)

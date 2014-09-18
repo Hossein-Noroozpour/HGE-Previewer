@@ -1,3 +1,4 @@
+#include "hge-configure.hpp"
 #include <memory>
 #include "hge-scene-unit.hpp"
 namespace hge

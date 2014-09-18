@@ -31,7 +31,7 @@ namespace hge
 			void addSky(const std::shared_ptr<SkyBoxUnit> &sky);
 			void setTerrain(const std::shared_ptr<TerrainUnit> &terrain);
 			void draw();
-			std::shared_ptr<GeometryUnit> getGeoByID(const std::string& id);
+			std::shared_ptr<GeometryUnit> getGeoByID(const core::Protocol::Types::IdType &id);
 			std::shared_ptr<math::CameraUnit> getCamera(const unsigned int& cameraIndex = 0);
 			std::shared_ptr<SkyBoxUnit> getSky(const unsigned int& skyIndex = 0);
 

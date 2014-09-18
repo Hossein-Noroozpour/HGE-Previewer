@@ -22,11 +22,11 @@ namespace hge
 		class GeometryUnit : public core::DataObject
 		{
 		public:
-			GeometryUnit(const std::string& id, const std::string& name);
+			GeometryUnit();
 			~GeometryUnit();
-			void setMesh(const std::shared_ptr<MeshUnit>& m);
+			void setMesh(const std::shared_ptr<MeshUnit> &m);
 #ifdef HGE_BASIC_QUERY_SUPPORT
-			void setOcclusionQueryMesh(const std::shared_ptr<MeshUnit>& m);
+			void setOcclusionQueryMesh(const std::shared_ptr<MeshUnit> &m);
 			void draw();
 			void occlusionQuery(const math::Matrix4D<>& vp);
 			void occlusionQueryStarter(const math::Matrix4D<>& vp);
@@ -34,18 +34,19 @@ namespace hge
 #else
 			void draw(const math::Matrix4D<>& vp);
 #endif
-			bool isThisYourID(const std::string& idstr);
 			void setShader(const std::shared_ptr<shader::ShaderUnit>& shader);
 			void setTexture(const std::shared_ptr<texture::TextureUnit>& texture);
 			math::ModelUnit* getModelMatrix();
 			std::shared_ptr<MeshUnit> getMesh();
-			void setData(std::istream &stream, const core::Protocol::ObjectSizeType &size, const bool &endianCompatible = true);
-			core::Protocol::ObjectTypeIdType getTypeId();
-			void setDataId(const core::Protocol::IdType &id);
-			core::Protocol::IdType getDataId();
+			// serializable part
+			void setData(std::istream &stream, const bool &endianCompatible = true);
+			// end of serializable part
+			// data object part
+			void setDataId(const core::Protocol::Types::IdType &id);
+			core::Protocol::Types::IdType getDataId();
+			// end of data object
 		private:
-			std::string id;
-			std::string name;
+			core::Protocol::Types::IdType id;
 			math::ModelUnit modelMatrix;
 			std::shared_ptr<MeshUnit> mesh;
 			std::shared_ptr<shader::ShaderUnit> shader;

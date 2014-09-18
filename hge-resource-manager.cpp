@@ -45,34 +45,37 @@
 std::shared_ptr<hge::render::SceneUnit> hge::core::ResourceManager::importScene(std::istream &stream)
 {
 	bool endianCompatible = endianCompatibilityCheck(stream);
+#ifdef HGE_TEST_MODE
+	if (endianCompatible) std::cout << __FILE__ << ": Endian compatible." << std::endl;
+	else std::cout << __FILE__ << ": Endian incompatible." << std::endl;
+#endif
 	std::shared_ptr<render::SceneUnit> result(new render::SceneUnit());
-	Protocol::ObjectSizeType dataSize;
-	Protocol::IdType id;
-	Protocol::ObjectTypeIdType typeId;
-	for(
-		stream.read((char *)(&id), sizeof id),
-		stream.read((char *)(&typeId), sizeof typeId),
-		stream.read((char *)(&dataSize), sizeof dataSize)
-		;
-	!stream.eof()
-		;
-	stream.read((char *)(&id), sizeof id),
-		stream.read((char *)(&typeId), sizeof typeId),
-		stream.read((char *)(&dataSize), sizeof dataSize))
+	Protocol::Types::ObjectTypeIdType typeId;
+	for(stream.read((char *)(&typeId), sizeof typeId);
+		!stream.eof();
+		stream.read((char *)(&typeId), sizeof typeId))
 	{
 		switch (typeId)
 		{
-		case Protocol::Geometry:
+		case Protocol::ObjectTypes::Geometry:
 		{
-			std::shared_ptr<render::GeometryUnit> geo(new render::GeometryUnit("", ""));
+#ifdef HGE_TEST_MODE
+			std::cout << __FILE__ << ": Geometry imported." << std::endl;
+			if (stream.eof())
+			{
+				std::cerr << __FILE__ << ": Format error!" << std::endl;
+			}
+#endif
+			std::shared_ptr<render::GeometryUnit> geo(new render::GeometryUnit());
+			geo->setData(stream, endianCompatible);
 			result->addGeometry(geo);
 			break;
 		}
-		case Protocol::Terrain:
+		case Protocol::ObjectTypes::Terrain:
 			break;
-		case Protocol::Mesh:
+		case Protocol::ObjectTypes::Mesh:
 			break;
-		case Protocol::SkyBox:
+		case Protocol::ObjectTypes::SkyBox:
 			break;
 		default:
 			break;

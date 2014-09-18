@@ -1,11 +1,9 @@
 #include "hge-geometry-unit.hpp"
 #include <iostream>
 #define HGEPRINTCODELINE std::cout << "Debugging: file:" << __FILE__ << " line:" << __LINE__ << std::endl << std::flush;
-hge::render::GeometryUnit::GeometryUnit
-(const std::string& id, const std::string& name):
-id(id), name(name)
+hge::render::GeometryUnit::GeometryUnit()
 #ifdef HGE_BASIC_QUERY_SUPPORT
-,mvp(math::Matrix4D<>(1.0f))
+	:mvp(math::Matrix4D<>(1.0f))
 #endif
 {
 #ifdef HGE_BASIC_QUERY_SUPPORT
@@ -18,8 +16,7 @@ hge::render::GeometryUnit::~GeometryUnit()
 	glDeleteQueries(HGEGEOMETRYNUMBEROFQUERIES, queries);
 #endif
 }
-void
-hge::render::GeometryUnit::setMesh(const std::shared_ptr<hge::render::MeshUnit>& m)
+void hge::render::GeometryUnit::setMesh(const std::shared_ptr<hge::render::MeshUnit>& m)
 {
 	mesh = m;
 }
@@ -59,8 +56,7 @@ void hge::render::GeometryUnit::draw(const math::Matrix4D<> &vp)
 #endif
 }
 #ifdef HGE_BASIC_QUERY_SUPPORT
-void
-hge::render::GeometryUnit::occlusionQuery(const math::Matrix4D<> &vp)
+void hge::render::GeometryUnit::occlusionQuery(const math::Matrix4D<> &vp)
 {
 	mvp = vp * modelMatrix.getConstRotateScaleTranslateMatrix();
 	glBeginQuery(GL_ANY_SAMPLES_PASSED, queries[HGEGEOMETRYOCCLUSIONQUERYINDEX]);
@@ -78,12 +74,9 @@ void hge::render::GeometryUnit::occlusionQueryStarter(const math::Matrix4D<> &vp
 	occlusionQueryShader->setModelViewProjectionMatrix(mvp);
 	occlusionQueryMesh->draw();
 	glEndQuery(GL_ANY_SAMPLES_PASSED);
+	//std::cout << "dffvsfdfsvdfdfdgdfgdgd";
 }
 #endif
-bool hge::render::GeometryUnit::isThisYourID(const std::string& idstr)
-{
-	return id == idstr;
-}
 void hge::render::GeometryUnit::setShader(const std::shared_ptr<shader::ShaderUnit>& sh)
 {
 	shader = sh;
@@ -98,8 +91,7 @@ void hge::render::GeometryUnit::setTexture(const std::shared_ptr<texture::Textur
 {
 	this->texture = texture;
 }
-hge::math::ModelUnit*
-hge::render::GeometryUnit::getModelMatrix()
+hge::math::ModelUnit* hge::render::GeometryUnit::getModelMatrix()
 {
 	return &modelMatrix;
 }
@@ -108,47 +100,78 @@ std::shared_ptr<hge::render::MeshUnit> hge::render::GeometryUnit::getMesh()
 	return mesh;
 }
 #ifdef HGE_BASIC_QUERY_SUPPORT
-void
-hge::render::GeometryUnit::setOcclusionQueryMesh(const std::shared_ptr<MeshUnit> &m)
+void hge::render::GeometryUnit::setOcclusionQueryMesh(const std::shared_ptr<MeshUnit> &m)
 {
 	occlusionQueryMesh = m;
 }
 #endif
-void hge::render::GeometryUnit::setData(std::istream &stream, const core::Protocol::ObjectSizeType &size, const bool &endianCompatible)
+void hge::render::GeometryUnit::setData(std::istream &stream, const bool &endianCompatible)
 {
-	auto beginPos = stream.tellg();
-	/// ID
-	core::Protocol::StringLengthType idStringLength;
-	stream.read((char *)(&idStringLength), sizeof idStringLength);
-	if (!endianCompatible) swapObject((char *)(&idStringLength), sizeof idStringLength);
-	char *idChars = new char[idStringLength];
-	stream.read(idChars, idStringLength);
-	id = std::string(idChars, idStringLength);
-	delete [] idChars;
-	/// Name
-	core::Protocol::StringLengthType nameStringLength;
-	stream.read((char *)(&nameStringLength), sizeof nameStringLength);
-	if (!endianCompatible) swapObject((char *)(&nameStringLength), sizeof nameStringLength);
-	char *nameChars = new char[nameStringLength];
-	stream.read(nameChars, nameStringLength);
-	id = std::string(nameChars, nameStringLength);
-	delete[] nameChars;
-	/// Mesh
-	core::Protocol::IdType meshId;
-	stream.read((char *)(&meshId), sizeof meshId);
-	//if (!endianCompatible) swapObject((char *)(&meshId), sizeof meshId);
-	core::Protocol::ObjectSizeType meshSize;
-	stream.read((char *)(&meshSize), sizeof meshSize);
-	if (!endianCompatible) swapObject((char *)(&meshSize), sizeof meshSize);
-	mesh = std::shared_ptr<MeshUnit>(new MeshUnit());
-	mesh->setData(stream, meshSize, endianCompatible);
-	if (stream.tellg() - beginPos < size)
-	{
-		stream.read((char *)(&meshId), sizeof meshId);
-		//if (!endianCompatible) swapObject((char *)(&meshId), sizeof meshId);
-		stream.read((char *)(&meshSize), sizeof meshSize);
-		if (!endianCompatible) swapObject((char *)(&meshSize), sizeof meshSize);
-		occlusionQueryMesh = std::shared_ptr<MeshUnit>(new MeshUnit());
-		occlusionQueryMesh->setData(stream, meshSize, endianCompatible);
+#define HGE_READ_BTYPE(t) stream.read((char *)(&t), sizeof t);if (!endianCompatible) swapObject((char *)(&t), sizeof t)
+#ifdef HGE_TEST_MODE
+#define HGE_TEST_FORMAT if (stream.eof()) { std::cerr << __FILE__ << ": Format error!" << std::endl; HGE_PRINT_CODE_LINE; }
+#define HGE_READ_STRING(s)\
+	{\
+		core::Protocol::Types::StringLengthType len;\
+		HGE_READ_BTYPE(len);\
+		std::cout << __FILE__ << ": String length: " << len << std::endl;\
+		char *str = new char[len];\
+		stream.read(str, len);\
+		s = std::string(str, len);\
+		std::cout << __FILE__ << ": String is: " << str << std::endl;\
+		delete [] str;\
 	}
+#else
+#define HGE_READ_STRING(s)\
+	{\
+		core::Protocol::Types::StringLengthType len;\
+		HGE_READ_BTYPE(len);\
+		char *str = new char[len];\
+		stream.read(str, len);\
+		s = std::string(str, len);\
+		delete [] str;\
+	}
+#define HGE_TEST_FORMAT ;
+#endif
+
+	/// ID
+	std::string idStr;
+	HGE_READ_STRING(idStr);
+	HGE_TEST_FORMAT;
+	/// Name
+	std::string nameStr;
+	HGE_READ_STRING(nameStr);
+	HGE_TEST_FORMAT;
+	/// ID
+	HGE_READ_BTYPE(id);
+#ifdef HGE_TEST_MODE
+	std::cout << __FILE__ << ": ID number is: " << id << std::endl;
+#endif
+	/// Mesh
+	mesh = std::shared_ptr<MeshUnit>(new MeshUnit());
+	mesh->setData(stream, endianCompatible);
+	HGE_TEST_FORMAT;
+	math::Matrix4D<> meshMatrix;
+	meshMatrix.setData(stream, endianCompatible);
+	HGE_TEST_FORMAT;
+	// Occlusion mesh
+	core::Protocol::Types::HgeBoolean hasOcc;
+	HGE_READ_BTYPE(hasOcc);
+	if (core::Protocol::Values::HgeTrue == hasOcc)
+	{
+		occlusionQueryMesh = std::shared_ptr<MeshUnit>(new MeshUnit());
+		occlusionQueryMesh->setData(stream, endianCompatible);
+		HGE_TEST_FORMAT;
+		math::Matrix4D<> occlusionQueryMeshMatrix;
+		occlusionQueryMeshMatrix.setData(stream, endianCompatible);
+		HGE_TEST_FORMAT;
+	}
+}
+void hge::render::GeometryUnit::setDataId(const core::Protocol::Types::IdType &id)
+{
+	this->id = id;
+}
+hge::core::Protocol::Types::IdType hge::render::GeometryUnit::getDataId()
+{
+	return id;
 }

@@ -44,7 +44,7 @@ void hge::core::Director::initialize()
 	}
 	render::SceneUnit::defaultShader = std::shared_ptr<shader::SunShader>(new shader::SunShader());
 	/////////////////////////////////////////////////////////////////
-	scene = ResourceManager::importScene("");
+	scene = ResourceManager::importScene("C:\\Users\\Thany Hulixer\\Documents\\Projects\\HGE\\HGE-Builder\\hge-sample.hge");
 }
 void hge::core::Director::update()
 {

@@ -14,3 +14,5 @@
 #if defined(HGE_USE_OPENGL_33) || defined(HGE_USE_OPENGL_40) || defined(HGE_USE_OPENGL_41) || defined(HGE_USE_OPENGL_42) || defined(HGE_USE_OPENGL_43)
 #define HGE_CONDITIONAL_RENDERING_SUPPORT
 #endif
+#define HGE_TEST_MODE
+#define HGE_PRINT_CODE_LINE std::cout << "Testing: file:" << __FILE__ << " line:" << __LINE__ << std::endl << std::flush;

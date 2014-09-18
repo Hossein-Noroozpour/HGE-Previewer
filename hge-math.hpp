@@ -1,6 +1,7 @@
 #ifndef HGE_MATH_HPP
 #define HGE_MATH_HPP
 #include <cmath>
+#include "hge-serializable.hpp"
 namespace hge
 {
 	namespace math
@@ -231,7 +232,7 @@ namespace hge
 		};
 
 		template<typename element_type>
-		class Matrix4D
+		class Matrix4D : public core::Serializable
 		{
 		public:
 			element_type mat [16];
@@ -419,6 +420,16 @@ namespace hge
 				r.mat[14] = element_type(-1.0);
 				r.mat[15] = element_type(0.0);
 				return r;
+			}
+			void setData(std::istream &stream, const bool &endianCompatible = true)
+			{
+				for (int i = 0; i < 16; i++)
+				{
+					core::Protocol::Types::VertexElementType v;
+					stream.read((char *)(&v), sizeof v); 
+					if (!endianCompatible) swapObject((char *)(&v), sizeof v);
+					mat[i] = element_type(v);
+				}
 			}
 		};
 	}
