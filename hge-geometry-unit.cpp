@@ -39,6 +39,7 @@ void hge::render::GeometryUnit::draw(const math::Matrix4D<> &vp)
 	}
 #endif
 #endif
+	//std::cout << "Render Testing." << std::endl;
 	mesh->bindVBO();
 	shader->use();
 	texture->bind(GL_TEXTURE0);

@@ -32,7 +32,7 @@ namespace hge
 			void occlusionQueryStarter(const math::Matrix4D<>& vp);
 			void setOcclusionQueryShader(const std::shared_ptr<shader::ShaderUnit>& shader);
 #else
-			void draw(const math::Matrix4D<>& vp);
+			void draw(const math::Matrix4D<> &vp);
 #endif
 			void setShader(const std::shared_ptr<shader::ShaderUnit>& shader);
 			void setTexture(const std::shared_ptr<texture::TextureUnit>& texture);

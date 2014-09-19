@@ -15,7 +15,7 @@ hge::core::Director::Director():
 	goLeftward(false),
 	rotateOn(false),
 	wireframeMode(false),
-	cameraRotationSpeed(0.001f),
+	cameraRotationSpeed(0.1f),
 	cameraMoveSpeed(5.0f)
 {
 }
@@ -146,6 +146,7 @@ void hge::core::Director::mouseMoved(const float &dx, const float &dy)
 {
 	if(rotateOn)
 	{
+		//std::cout << "sdfssdfsfsdfsfsdfdsfs";
 		scene->getCamera()->rotateGlobalZ(dx * cameraRotationSpeed);
 		scene->getCamera()->rotateLocalX(dy * cameraRotationSpeed);
 	}

@@ -44,8 +44,8 @@ hge::render::SceneUnit::draw()
 	if(hasGeometry)
 	{
 #ifdef HGE_BASIC_QUERY_SUPPORT
-		/*glColorMask(GL_FALSE, GL_FALSE, GL_FALSE, GL_FALSE);
-		glDepthMask(GL_FALSE);*/
+		glColorMask(GL_FALSE, GL_FALSE, GL_FALSE, GL_FALSE);
+		glDepthMask(GL_FALSE);
 		geometries[0]->occlusionQueryStarter(vp);
 		for(unsigned int i = 1; i < geometries.size(); i++)
 		{

@@ -7,8 +7,8 @@ namespace hge
 			cmrX(Vector3D<>(1.0f, 0.0f, 0.0f)),
 			cmrY(Vector3D<>(0.0f, 1.0f, 0.0f)),
 			cmrZ(Vector3D<>::cross(cmrX, cmrY)),
-			cmrLoc(Vector3D<>(0.0f, 0.0f, -1.0f)),
-			viewM(Matrix4D<>::lookAt(Vector3D<>(0.0f, 0.0f, -1.0f), Vector3D<>(0.0f, 0.0f, 0.0f), Vector3D<>(0.0f, 1.0f, 0.0f))),
+			cmrLoc(Vector3D<>(0.0f, 0.0f, 10.0f)),
+			viewM(Matrix4D<>::lookAt(Vector3D<>(0.0f, 0.0f, 10.0f), Vector3D<>(0.0f, 0.0f, 0.0f), Vector3D<>(0.0f, 1.0f, 0.0f))),
 			rotsclM(Matrix4D<>(1.0f))
 		{
 		}
