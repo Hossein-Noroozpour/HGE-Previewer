@@ -1,7 +1,7 @@
-#include "hge-glfw-window.hpp"
+#include "hge-main-window.hpp"
+#include "hge-configure.hpp"
 #include <iostream>
 #define HGETERMINATE std::cerr << "Termination in line: " << __LINE__ << " file: " << __FILE__ << std::endl; throw std::string("Termination.");
-#define HGETESTWINDOW
 std::shared_ptr<hge::core::ApplicationUnit> hge::ui::HGEGLFWWindow::application;
 double hge::ui::HGEGLFWWindow::lastCursorXposition = 0.0;
 double hge::ui::HGEGLFWWindow::lastCursorYposition = 0.0;
@@ -163,7 +163,7 @@ void hge::ui::HGEGLFWWindow::start(const std::shared_ptr<hge::core::ApplicationU
 	}
 	auto priMon = glfwGetPrimaryMonitor();
 	auto vidMod = glfwGetVideoMode(priMon);
-#ifdef HGETESTWINDOW
+#ifdef HGE_TEST_MODE
 	window = glfwCreateWindow(750, 500, "Hulixerian Game Engine", 0, NULL);
 #else
 	window = glfwCreateWindow(vidMod->width, vidMod->height, "Hulixerian Game Engine", priMon, NULL);
@@ -178,29 +178,34 @@ void hge::ui::HGEGLFWWindow::start(const std::shared_ptr<hge::core::ApplicationU
 	{
 		HGETERMINATE
 	}
-	glClearColor(0.5f, 0.5f, 0.5f, 1.0f);
-	//glEnable(GL_CULL_FACE);
-	//glEnable(GL_DEPTH_TEST);
+	glClearColor(0.2f, 0.2f, 0.2f, 0.0f);
+	glEnable(GL_CULL_FACE);
+	glEnable(GL_DEPTH_TEST);
 	//glEnable(GL_SCISSOR_TEST);
 	//glEnable(GL_STENCIL_TEST);
 	//glEnable(GL_ALPHA_TEST);
 	glfwSetKeyCallback(window, onKeyEvent);
 	glfwSetMouseButtonCallback(window, onMouseKeyEvent);
 	glfwSetCursorPosCallback(window, onCursorMoveEvent);
-#ifndef HGETESTWINDOW
-	glViewport(0, 0, vidMod->width, vidMod->height);
-#else
+#ifdef HGE_TEST_MODE
 	glViewport(0, 0, 740, 490);
+#else
+	glViewport(0, 0, vidMod->width, vidMod->height);
 #endif
 	application->initialize();
 	glfwSetFramebufferSizeCallback(window, onChangeSizeEvent);
-#ifndef HGETESTWINDOW
+#ifndef HGE_TEST_MODE
 	glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 #endif
 	while(!glfwWindowShouldClose(window))
 	{
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
 		application->update();
+		glBegin(GL_TRIANGLES);
+		glVertex3f(0.f, 0.f, 0.f);
+		glVertex3f(10.f, 0.f, 0.f);
+		glVertex3f(10.f, 10.f, 0.f);
+		glEnd();
 		glFinish();
 		glfwSwapBuffers(window);
 		glfwPollEvents();

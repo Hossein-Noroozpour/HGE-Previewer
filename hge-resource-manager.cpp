@@ -60,10 +60,12 @@ std::shared_ptr<hge::render::SceneUnit> hge::core::ResourceManager::importScene(
 		case Protocol::ObjectTypes::Geometry:
 		{
 #ifdef HGE_TEST_MODE
-			std::cout << __FILE__ << ": Geometry imported." << std::endl;
+			std::cout << __FILE__ << "(" << __LINE__ << "): Geometry imported." << std::endl;
+#endif
+#ifdef HGE_DEBUG_MODE
 			if (stream.eof())
 			{
-				std::cerr << __FILE__ << ": Format error!" << std::endl;
+				std::cerr << __FILE__ << "(" << __LINE__ << "): Format error!" << std::endl;
 			}
 #endif
 			std::shared_ptr<render::GeometryUnit> geo(new render::GeometryUnit());
@@ -72,7 +74,20 @@ std::shared_ptr<hge::render::SceneUnit> hge::core::ResourceManager::importScene(
 			break;
 		}
 		case Protocol::ObjectTypes::Terrain:
+		{
+#ifdef HGE_TEST_MODE
+			std::cout << __FILE__ << "(" << __LINE__ << "): Terrain imported." << std::endl;
+#endif
+#ifdef HGE_DEBUG_MODE
+			if (stream.eof())
+			{
+				std::cerr << __FILE__ << "(" << __LINE__ << "): Format error!" << std::endl;
+			}
+#endif
+			std::shared_ptr<render::TerrainUnit> terrain(new render::TerrainUnit());
+			terrain->setData(stream, endianCompatible);
 			break;
+		}
 		case Protocol::ObjectTypes::Mesh:
 			break;
 		case Protocol::ObjectTypes::SkyBox:

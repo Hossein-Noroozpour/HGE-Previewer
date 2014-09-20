@@ -21,6 +21,7 @@ namespace hge
 		public:
 			enum exceptions
 			{
+				FailedToOpenFile,
 				FailedToRead,
 				UnrecognizedFormat,
 				InitializationError,
@@ -28,9 +29,11 @@ namespace hge
 				ParsingError
 			};
 			TextureUnit(const GLenum &TextureTarget, std::istream &source);
+			TextureUnit(const GLenum &TextureTarget, std::string &fileAddress);
 			bool validate(std::istream &source);
 			void bind(const GLenum &TextureUnit);
 		private:
+			void constructor(std::istream &source);
 			GLenum textureTarget;
 			GLuint textureObject;
 		};

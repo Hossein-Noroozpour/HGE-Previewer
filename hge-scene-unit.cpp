@@ -4,8 +4,8 @@
 #include <iostream>
 std::shared_ptr<hge::shader::SunShader> hge::render::SceneUnit::defaultShader;
 std::shared_ptr<hge::texture::TextureUnit> hge::render::SceneUnit::defaultTexture;
+std::shared_ptr<hge::shader::WhiteShader> hge::render::SceneUnit::occlusionQueryShader;
 hge::render::SceneUnit::SceneUnit():
-	occlusionQueryShader(new shader::WhiteShader()),
 	currentCameraIndex(0),
 	currentPerspectiveIndex(0),
 	hasTerrain(false),
@@ -22,8 +22,8 @@ void hge::render::SceneUnit::addGeometry(const std::shared_ptr<GeometryUnit>& ge
 #endif
 	geometry->setShader(defaultShader);
 	geometry->setTexture(defaultTexture);
-	geometry->getModelMatrix()->scale(1000.0f);
-	geometry->getModelMatrix()->translate(math::Vector3D<>(0.0f, 0.0f, 10.0f));
+	//geometry->getModelMatrix()->scale(1000.0f);
+	//geometry->getModelMatrix()->translate(math::Vector3D<>(0.0f, 0.0f, 10.0f));
 	geometries.push_back(geometry);
 }
 void

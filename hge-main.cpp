@@ -28,7 +28,7 @@ extern "C"
 }
 #endif // End of __cplusplus
 #else // End of ANDROID
-#include "hge-glfw-window.hpp"
+#include "hge-main-window.hpp"
 
 int main(int argc, char *argv[])
 {

@@ -130,7 +130,7 @@ void hge::render::MeshUnit::setData(std::istream &stream, const bool &endianComp
 	stream.read((char *)(&verticesCount), sizeof verticesCount);
 	if (!endianCompatible) swapObject((char *)(&verticesCount), sizeof verticesCount);
 #ifdef HGE_TEST_MODE
-	std::cout << __FILE__ << ": Vertices count: " << verticesCount << std::endl;
+	HGE_FILE_LINE "Vertices count: " << verticesCount << std::endl;
 #endif
 	GLfloat *vertices = new GLfloat[verticesCount];
 	stream.read((char *)(vertices), sizeof(GLfloat) * verticesCount);
@@ -141,11 +141,19 @@ void hge::render::MeshUnit::setData(std::istream &stream, const bool &endianComp
 			swapObject((char *)(&vertices[i]), sizeof GLfloat);
 		}
 	}
+#ifdef HGE_VERBOSE_TEST_MODE
+	HGE_FILE_LINE "Vertices: ";
+	for (core::Protocol::Types::VerticesElementsCountType i = 0; i < verticesCount; i++)
+	{
+		std::cout << "v" << i << ":" << vertices[i] << " ";
+	}
+	std::cout << std::endl;
+#endif
 	core::Protocol::Types::IndicesCountType indicesCount;
 	stream.read((char *)(&indicesCount), sizeof indicesCount);
 	if (!endianCompatible) swapObject((char *)(&indicesCount), sizeof indicesCount);
 #ifdef HGE_TEST_MODE
-	std::cout << __FILE__ << ": Indices count: " << indicesCount << std::endl;
+	HGE_FILE_LINE "Indices count: " << indicesCount << std::endl;
 #endif
 	GLuint *indices = new GLuint[indicesCount];
 	stream.read((char *)(indices), sizeof(GLuint) * indicesCount);

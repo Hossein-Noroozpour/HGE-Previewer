@@ -15,7 +15,7 @@ hge::core::Director::Director():
 	goLeftward(false),
 	rotateOn(false),
 	wireframeMode(false),
-	cameraRotationSpeed(0.1f),
+	cameraRotationSpeed(0.001f),
 	cameraMoveSpeed(5.0f)
 {
 }
@@ -27,23 +27,15 @@ void hge::core::Director::start()
 }
 void hge::core::Director::initialize()
 {
-	/// Testing part
-	std::string logoFileAddress("C:\\Users\\Thany Hulixer\\Documents\\Visual Studio 2013"
-		"\\Projects\\HGE-Previewer\\x64\\Debug\\HGE-Logo1024x1024.png");
-	std::ifstream logoFileStream;
-	logoFileStream.open(logoFileAddress, std::ios_base::binary);
-	if (logoFileStream.is_open())
-	{
-		std::shared_ptr<hge::texture::TextureUnit> logoTexture(new hge::texture::TextureUnit(GL_TEXTURE_2D, logoFileStream));
-		render::SceneUnit::defaultTexture = logoTexture;
-	}
-	else
-	{
-		std::cerr << "Error in logo file opening process." << std::endl;
-		std::terminate();
-	}
-	render::SceneUnit::defaultShader = std::shared_ptr<shader::SunShader>(new shader::SunShader());
-	/////////////////////////////////////////////////////////////////
+	/// testing part
+	render::SceneUnit::defaultShader =
+		std::shared_ptr<hge::shader::SunShader>(new hge::shader::SunShader());
+	render::SceneUnit::defaultTexture =
+		std::shared_ptr<hge::texture::TextureUnit>(new hge::texture::TextureUnit(GL_TEXTURE_2D,
+		std::string("C:\\Users\\Thany Hulixer\\Documents\\Visual Studio 2013\\Projects\\HGE-Previewer\\x64\\Debug\\HGE-Logo1024x1024.png")));
+	render::SceneUnit::occlusionQueryShader =
+		std::shared_ptr<hge::shader::WhiteShader>(new hge::shader::WhiteShader());
+	/// end of testing part
 	scene = ResourceManager::importScene("C:\\Users\\Thany Hulixer\\Documents\\Projects\\HGE\\HGE-Builder\\hge-sample.hge");
 }
 void hge::core::Director::update()

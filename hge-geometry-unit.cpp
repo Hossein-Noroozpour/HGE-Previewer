@@ -116,8 +116,9 @@ void hge::render::GeometryUnit::setData(std::istream &stream, const bool &endian
 		core::Protocol::Types::StringLengthType len;\
 		HGE_READ_BTYPE(len);\
 		std::cout << __FILE__ << ": String length: " << len << std::endl;\
-		char *str = new char[len];\
+		char *str = new char[len + 1];\
 		stream.read(str, len);\
+		str[len] = 0;\
 		s = std::string(str, len);\
 		std::cout << __FILE__ << ": String is: " << str << std::endl;\
 		delete [] str;\
@@ -127,8 +128,9 @@ void hge::render::GeometryUnit::setData(std::istream &stream, const bool &endian
 	{\
 		core::Protocol::Types::StringLengthType len;\
 		HGE_READ_BTYPE(len);\
-		char *str = new char[len];\
+		char *str = new char[len + 1];\
 		stream.read(str, len);\
+		str[len] = 0;\
 		s = std::string(str, len);\
 		delete [] str;\
 	}

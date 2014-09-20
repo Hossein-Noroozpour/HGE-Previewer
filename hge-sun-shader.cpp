@@ -82,7 +82,6 @@ void hge::shader::SunShader::setSunDirection(const math::Vector3D<> &sunDirectio
 void hge::shader::SunShader::use()
 {
 	glUseProgram(shaderProgram);
-	glDisableVertexAttribArray(3);
 	glEnableVertexAttribArray(0);
 	glEnableVertexAttribArray(1);
 	glEnableVertexAttribArray(2);
@@ -105,7 +104,7 @@ GLuint hge::shader::SunShader::getVertexShaderProgram()
 GLuint hge::shader::SunShader::getGeometryShaderProgram()
 {
 	std::cerr << "Error this shader program does not have geometry shader." << std::endl;
-	HGEPRINTCODELINE
+	HGEPRINTCODELINE;
 	std::terminate();
 }
 GLuint hge::shader::SunShader::getFragmentShaderProgram()

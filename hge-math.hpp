@@ -1,5 +1,6 @@
 #ifndef HGE_MATH_HPP
 #define HGE_MATH_HPP
+#include "hge-configure.hpp"
 #include <cmath>
 #include "hge-serializable.hpp"
 namespace hge
@@ -256,7 +257,24 @@ namespace hge
 				mat[15] = e;
 			}
 			Matrix4D()
-			{}
+			{
+				mat[0] = element_type(1);
+				mat[1] = element_type(0);
+				mat[2] = element_type(0);
+				mat[3] = element_type(0);
+				mat[4] = element_type(0);
+				mat[5] = element_type(1);
+				mat[6] = element_type(0);
+				mat[7] = element_type(0);
+				mat[8] = element_type(0);
+				mat[9] = element_type(0);
+				mat[10] = element_type(1);
+				mat[11] = element_type(0);
+				mat[12] = element_type(0);
+				mat[13] = element_type(0);
+				mat[14] = element_type(0);
+				mat[15] = element_type(1);
+			}
 			Matrix4D(const Matrix4D<element_type> &m)
 			{
 				for(int i = 0; i < 16; i++)
@@ -423,13 +441,22 @@ namespace hge
 			}
 			void setData(std::istream &stream, const bool &endianCompatible = true)
 			{
+#ifdef HGE_VERBOSE_TEST_MODE
+				std::cout << __FILE__ << "(" << __LINE__ << "): " << "Matrix: ";
+#endif
 				for (int i = 0; i < 16; i++)
 				{
 					core::Protocol::Types::VertexElementType v;
 					stream.read((char *)(&v), sizeof v); 
 					if (!endianCompatible) swapObject((char *)(&v), sizeof v);
 					mat[i] = element_type(v);
+#ifdef HGE_VERBOSE_TEST_MODE
+					std::cout << "m[" << i << "]: " << v << " ";
+#endif
 				}
+#ifdef HGE_VERBOSE_TEST_MODE
+				std::cout << std::endl;
+#endif
 			}
 		};
 	}

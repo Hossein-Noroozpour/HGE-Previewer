@@ -1,5 +1,6 @@
 #include "hge-texture-unit.hpp"
 #include <iostream>
+#include <fstream>
 #include <png.h>
 #define HGE_PNG_SIGNATURE_SIZE 8
 static void pngDataReader(png_structp pngPtr, png_bytep data, png_size_t length)
@@ -7,8 +8,7 @@ static void pngDataReader(png_structp pngPtr, png_bytep data, png_size_t length)
 	png_voidp a = png_get_io_ptr(pngPtr);
 	((std::istream*)a)->read((char*)data, length);
 }
-hge::texture::TextureUnit::TextureUnit(const GLenum &textureTarget, std::istream &source):
-textureTarget(textureTarget)
+void hge::texture::TextureUnit::constructor(std::istream &source)
 {
 	if (!validate(source))
 	{
@@ -77,7 +77,7 @@ textureTarget(textureTarget)
 	rowPtrs = new png_bytep[imgHeight];
 	data = new char[imgWidth * imgHeight * bitdepth * channels / 8];
 	const unsigned int stride = imgWidth * bitdepth * channels / 8;
-	for (size_t i = 0; i < imgHeight; i++) 
+	for (size_t i = 0; i < imgHeight; i++)
 	{
 		png_uint_32 q = png_uint_32((imgHeight - i - 1) * stride);
 		rowPtrs[i] = (png_bytep)data + q;
@@ -88,10 +88,10 @@ textureTarget(textureTarget)
 	switch (channels)
 	{
 	case 4:
-		glTexImage2D(textureTarget, 0, GL_RGBA8, imgWidth, imgHeight, 0, GL_RGBA, GL_UNSIGNED_BYTE, (void*)data);
+		glTexImage2D(textureTarget, 0, GL_RGBA8, imgWidth, imgHeight, 0, GL_BGRA, GL_UNSIGNED_BYTE, (void*)data);
 		break;
 	case 3:
-		glTexImage2D(textureTarget, 0, GL_RGB8, imgWidth, imgHeight, 0, GL_RGB, GL_UNSIGNED_BYTE, (void*)data);
+		glTexImage2D(textureTarget, 0, GL_RGB8, imgWidth, imgHeight, 0, GL_BGR, GL_UNSIGNED_BYTE, (void*)data);
 		break;
 	default:
 		break;
@@ -102,6 +102,24 @@ textureTarget(textureTarget)
 	delete[](png_bytep)rowPtrs;
 	png_destroy_read_struct(&pngPtr, &infoPtr, (png_infopp)0);
 	delete[] data;
+}
+hge::texture::TextureUnit::TextureUnit(const GLenum &textureTarget, std::istream &source):
+textureTarget(textureTarget)
+{
+	constructor(source);
+}
+hge::texture::TextureUnit::TextureUnit(const GLenum &textureTarget, std::string &fileAddress)
+{
+	std::ifstream fileStream;
+	fileStream.open(fileAddress, std::ios_base::binary);
+	if (fileStream.is_open())
+	{
+		constructor(fileStream);
+	}
+	else
+	{
+		throw FailedToOpenFile;
+	}
 }
 bool hge::texture::TextureUnit::validate(std::istream &source)
 {
