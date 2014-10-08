@@ -9,41 +9,68 @@ hge::shader::TerrainSunShader::TerrainSunShader():
 	shaderProgram(render::ShaderEngine::createProgram())
 {
 	std::string pVS =
-		shaderLanguageVersion +
-		"layout(location=0)in vec3 vtx;" + shaderEndline +
-		//All of the normals must be normalized.
-		"layout(location=1)in vec3 nrm;" + shaderEndline +
-		//All of the tangents must be normalized.
-		"layout(location=2)in vec3 tan;" + shaderEndline +
-		//All of the bitangents must be normalized.
-		"layout(location=3)in vec3 btn;" + shaderEndline +
-		"out float " + lightIntensityVarName + ";" + shaderEndline +
-		"out vec3 " + vsWorldPositionOutVarName + ";" + shaderEndline +
-		"uniform mat4 " + modelViewProjectionMatrixUniformName + ";" + shaderEndline +
-		"uniform mat4 " + sunDirectionUniformName + ";" + shaderEndline +
-		"void main()" + shaderEndline +
-		"{" + shaderEndline +
-		lightIntensityVarName + "=float(max(float(dot(" + sunDirectionUniformName + ",nrm)),0.1));" + shaderEndline +
-		"gl_Position=" + modelMatrixUniformName + "*vec4(vtx,1.0);" + shaderEndline +
-		vsWorldPositionOutVarName + "=vtx;" + shaderEndline +
-		"}";
+			shaderLanguageVersion +
+			"layout (location=0) in vec3 " + vertexAttribute + ";" + shaderEndline +
+			//All of the normals must be normalized.
+			"layout (location=1) in vec3 " + normalAttribute + ";" + shaderEndline +
+			//All of the tangents must be normalized.
+			"layout (location=2) in vec3 " + tangentAttribute + ";" + shaderEndline +
+			//All of the bitangents must be normalized.
+			"layout (location=3) in vec3 " + bitangentAttribute + ";" + shaderEndline +
+#define VSVERTEXDATA \
+			"VertexData" + shaderEndline +\
+			"{" + shaderEndline +\
+				"vec2 " + uvAttribute + ";" + shaderEndline +\
+				"vec3 " + normalAttribute + ";" + shaderEndline +\
+				"vec3 " + tangentAttribute + ";" + shaderEndline +\
+				"vec3 " + bitangentAttribute + ";" + shaderEndline +\
+			"} "
+			"out " VSVERTEXDATA  + vertexOutName + ";" + shaderEndline +
+			"uniform mat4 " + modelViewProjectionMatrixUniformName + ";" + shaderEndline +
+			"uniform mat4 " + sunDirectionUniformName + ";" + shaderEndline +
+			"void main()" + shaderEndline +
+			"{" + shaderEndline +
+				// vertexOutName + "." + lightIntensityVarName + " = float(max(float(dot(" + sunDirectionUniformName + ", " + normalAttribute + ")), 0.1));" + shaderEndline +
+				"gl_Position = " + modelViewProjectionMatrixUniformName + " * vec4(" + vertexAttribute + ", 1.0);" + shaderEndline +
+				vertexOutName + "." + uvAttribute + " = vec2(" + vertexAttribute + ".x + " + vertexAttribute + ".z, " +
+					 + vertexAttribute + ".y + " + vertexAttribute + ".z);" + shaderEndline +
+				vertexOutName + "." + normalAttribute + " = " + normalAttribute + ";" + shaderEndline +
+				vertexOutName + "." + tangentAttribute + " = " + tangentAttribute + ";" + shaderEndline +
+				vertexOutName + "." + bitangentAttribute + " = " + bitangentAttribute + ";" + shaderEndline +
+			"}";
 #ifdef HGE_GEOMETRY_SHADER_SUPPORT
 	std::string pGS =
-		shaderLanguageVersion +
-		"layout(triangles)in;" + shaderEndline +
-		"layout(triangle_strip,max_vertices=3)out;" + shaderEndline +
-		"in gl_PerVertex" + shaderEndline +
-		"{" + shaderEndline +
-		"vec4 gl_Position;" + shaderEndline +
-		"vec3 ;" + shaderEndline +
-		"vec3 ;" + shaderEndline +
-		"}gl_in[];" + shaderEndline +
+			shaderLanguageVersion +
+			"layout (triangles) in;" + shaderEndline +
+			"layout (triangle_strip, max_vertices=3) out;" + shaderEndline +
+			"in " VSVERTEXDATA  + vertexInName + ";" + shaderEndline +
+#define GSVERTEXDATA \
+			"VertexData" + shaderEndline +\
+			"{" + shaderEndline +\
+			shaderTabCharacter + "vec2 " + uvAttribute + ";" + shaderEndline +\
+			shaderTabCharacter + "vec3 " + normalAttribute + ";" + shaderEndline +\
+			shaderTabCharacter + "vec3 " + tangentAttribute + ";" + shaderEndline +\
+			shaderTabCharacter + "vec3 " + bitangentAttribute + ";" + shaderEndline +\
+			"} "
+			"out " GSVERTEXDATA  + vertexOutName + ";" + shaderEndline +
+			"void main()" + shaderEndline +
+			"{" + shaderEndline +
+			shaderTabCharacter + "for(int i = 0; i < gl_in.length(); i++)" + shaderEndline +
+			shaderTabCharacter + "{" + shaderEndline +
+			shaderTabCharacter + shaderTabCharacter + "gl_Position = gl_in[i].gl_Position;" + shaderEndline +
+			shaderTabCharacter + shaderTabCharacter + vertexOutName + "." + uvAttribute + " = " + vertexInName + "." + uvAttribute + ";" + shaderEndline +
+			shaderTabCharacter + shaderTabCharacter + vertexOutName + "." + normalAttribute + " = " + vertexInName + "." + normalAttribute + ";" + shaderEndline +
+			shaderTabCharacter + shaderTabCharacter + vertexOutName + "." + tangentAttribute + " = " + vertexInName + "." + tangentAttribute + ";" + shaderEndline +
+			shaderTabCharacter + shaderTabCharacter + vertexOutName + "." + bitangentAttribute + " = " + vertexInName + "." + bitangentAttribute + ";" + shaderEndline +
+			shaderTabCharacter + shaderTabCharacter + "EmitVertex();" + shaderEndline +
+			shaderTabCharacter + "}" +shaderEndline +
+			shaderTabCharacter + "EndPrimitive();" + shaderEndline +
+			"}";
 #endif
 	std::string pFS = readShaderFile(shLoc + "hge-terrain-shader-string.fragmentShader");
 	vertexShaderProgram = render::ShaderEngine::addShaderToProgram(pVS, GL_VERTEX_SHADER, shaderProgram);
-#ifdef HGETERRAINSUNSHADERDEBUGMODE
-	std::cout << "Vertext shader compiled." << std::endl;
-	HGEPRINTCODELINE
+#ifdef HGE_TEST_MODE
+	HGE_FILE_LINE "Vertext shader compiled." << std::endl;
 #endif
 #ifdef ANDROID
 #else

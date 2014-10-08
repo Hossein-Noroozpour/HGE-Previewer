@@ -23,7 +23,15 @@ namespace hge
 			static const std::string modelViewProjectionMatrixUniformName;
 			static const std::string modelMatrixUniformName;
 			static const std::string sunDirectionUniformName;
+			static const std::string vertexAttribute;
+			static const std::string normalAttribute;
+			static const std::string uvAttribute;
+			static const std::string tangentAttribute;
+			static const std::string bitangentAttribute;
+			static const std::string vertexInName;
+			static const std::string vertexOutName;
 			static const std::string shaderEndline;
+			static const std::string shaderTabCharacter;
 		public:
 			virtual void setModelMatrix(const math::Matrix4D<> &modelMatrix) = 0;
 			virtual void setModelViewProjectionMatrix(const math::Matrix4D<> &modelViewProjectionMatrix) = 0;
