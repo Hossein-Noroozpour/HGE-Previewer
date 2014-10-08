@@ -138,7 +138,7 @@ void hge::render::MeshUnit::setData(std::istream &stream, const bool &endianComp
 	{
 		for (core::Protocol::Types::VerticesElementsCountType i = 0; i < verticesCount; i++)
 		{
-			swapObject((char *)(&vertices[i]), sizeof GLfloat);
+			swapObject((char *)(&vertices[i]), sizeof(GLfloat));
 		}
 	}
 #ifdef HGE_VERBOSE_TEST_MODE
@@ -161,7 +161,7 @@ void hge::render::MeshUnit::setData(std::istream &stream, const bool &endianComp
 	{
 		for (core::Protocol::Types::IndicesCountType i = 0; i < indicesCount; i++)
 		{
-			swapObject((char *)(&indices[i]), sizeof GLuint);
+			swapObject((char *)(&indices[i]), sizeof(GLuint));
 		}
 	}
 	if (vbo != 0)
@@ -176,10 +176,10 @@ void hge::render::MeshUnit::setData(std::istream &stream, const bool &endianComp
 	}
 	glGenBuffers(1, &vbo);
 	glBindBuffer(GL_ARRAY_BUFFER, vbo);
-	glBufferData(GL_ARRAY_BUFFER, verticesCount * sizeof GLfloat, vertices, GL_STATIC_DRAW);
+	glBufferData(GL_ARRAY_BUFFER, verticesCount * sizeof(GLfloat), vertices, GL_STATIC_DRAW);
 	glGenBuffers(1, &ibo);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ibo);
-	glBufferData(GL_ELEMENT_ARRAY_BUFFER, indicesCount * sizeof GLuint, indices, GL_STATIC_DRAW);
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER, indicesCount * sizeof(GLuint), indices, GL_STATIC_DRAW);
 	delete[] vertices;
 	delete[] indices;
 }

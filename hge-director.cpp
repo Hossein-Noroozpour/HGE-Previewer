@@ -1,4 +1,5 @@
 #include "hge-director.hpp"
+#include "hge-texture-unit.hpp"
 #include "hge-terrain-unit.hpp"
 #include "hge-terrain-sun-shader.hpp"
 #include "hge-protocol.hpp"
@@ -31,7 +32,7 @@ void hge::core::Director::initialize()
 	render::SceneUnit::defaultShader =
 		std::shared_ptr<hge::shader::SunShader>(new hge::shader::SunShader());
 	render::SceneUnit::defaultTexture =
-		std::shared_ptr<hge::texture::TextureUnit>(new hge::texture::TextureUnit(GL_TEXTURE_2D,
+		std::shared_ptr<hge::texture::TextureUnit>(new hge::texture::TextureUnit(GLenum(GL_TEXTURE_2D),
 		std::string("C:\\Users\\Thany Hulixer\\Documents\\Visual Studio 2013\\Projects\\HGE-Previewer\\x64\\Debug\\HGE-Logo1024x1024.png")));
 	render::SceneUnit::occlusionQueryShader =
 		std::shared_ptr<hge::shader::WhiteShader>(new hge::shader::WhiteShader());

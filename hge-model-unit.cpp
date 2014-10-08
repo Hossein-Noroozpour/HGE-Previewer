@@ -3,10 +3,7 @@ hge::math::ModelUnit::ModelUnit():
 	localX(math::Vector3D<>(1.0f, 0.0f, 0.0f)),
 	localY(math::Vector3D<>(0.0f, 1.0f, 0.0f)),
 	localZ(math::Vector3D<>(0.0f, 0.0f, 1.0f)),
-	location(math::Vector3D<>(0.0f, 0.0f, 0.0f)),
-	rotateScaleTranslateMatrix(math::Matrix4D<>(1.0f)),
-	rotateScaleMatrix(math::Matrix4D<>(1.0f)),
-	rotateMatrix(math::Matrix4D<>(1.0f))
+	location(math::Vector3D<>(0.0f, 0.0f, 0.0f))
 {
 }
 

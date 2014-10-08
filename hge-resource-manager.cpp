@@ -15,7 +15,7 @@
 //	if (!infile || !outfile) return -1;
 //	char buffer[128];
 //	int num_read = 0;
-//	while ((num_read = gzread(infile, buffer, sizeof(buffer))) > 0) 
+//	while ((num_read = gzread(infile, buffer, sizeof(buffer))) > 0)
 //	{
 //		fwrite(buffer, 1, num_read, outfile);
 //	}
@@ -86,6 +86,8 @@ std::shared_ptr<hge::render::SceneUnit> hge::core::ResourceManager::importScene(
 #endif
 			std::shared_ptr<render::TerrainUnit> terrain(new render::TerrainUnit());
 			terrain->setData(stream, endianCompatible);
+			//terrain->setShader(new shader::)
+			result->setTerrain(terrain);
 			break;
 		}
 		case Protocol::ObjectTypes::Mesh:

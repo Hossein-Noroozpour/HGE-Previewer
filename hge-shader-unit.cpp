@@ -1,4 +1,33 @@
 #include "hge-shader-unit.hpp"
+const std::string hge::shader::ShaderUnit::shaderLanguageVersion =
+#ifdef HGE_USE_OPENGL_43
+"#version 430\n";
+#elif defined(HGE_USE_OPENGL_42)
+"#version 420\n";
+#elif defined(HGE_USE_OPENGL_41)
+"#version 410\n";
+#elif defined(HGE_USE_OPENGL_40)
+"#version 400\n";
+#elif defined(HGE_USE_OPENGL_33)
+"#version 330\n";
+#endif
+#ifdef HGE_DEBUG_MODE
+const std::string hge::shader::ShaderUnit::vsUvOutVarName("outUV");
+const std::string hge::shader::ShaderUnit::vsWorldPositionOutVarName("worldPosition");
+const std::string hge::shader::ShaderUnit::lightIntensityVarName("lightIntensity");
+const std::string hge::shader::ShaderUnit::modelViewProjectionMatrixUniformName("mvpMatrix");
+const std::string hge::shader::ShaderUnit::modelMatrixUniformName("modelMatrix");
+const std::string hge::shader::ShaderUnit::sunDirectionUniformName("sunDirection");
+const std::string hge::shader::ShaderUnit::shaderEndline("\n");
+#else
+const std::string hge::shader::ShaderUnit::vsUvOutVarName("ouv");
+const std::string hge::shader::ShaderUnit::vsWorldPositionOutVarName("wp");
+const std::string hge::shader::ShaderUnit::lightIntensityVarName("li");
+const std::string hge::shader::ShaderUnit::modelViewProjectionMatrixUniformName("mvp");
+const std::string hge::shader::ShaderUnit::modelMatrixUniformName("m");
+const std::string hge::shader::ShaderUnit::sunDirectionUniformName("s");
+const std::string hge::shader::ShaderUnit::shaderEndline("");
+#endif
 //hge::shader::ShaderUnit::ShaderUnit():
 //shaderProgram(render::ShaderEngine::createProgram())
 //{

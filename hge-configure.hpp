@@ -43,8 +43,9 @@
 #endif
 #if defined(HGE_USE_OPENGL_33) || defined(HGE_USE_OPENGL_40) || defined(HGE_USE_OPENGL_41) || defined(HGE_USE_OPENGL_42) || defined(HGE_USE_OPENGL_43)
 #define HGE_CONDITIONAL_RENDERING_SUPPORT
+#define HGE_GEOMETRY_SHADER_SUPPORT
 #endif
 #define HGE_PRINT_CODE_LINE std::cout << __FILE__ << ": line:" << __LINE__ << std::endl;
-#define HGE_FILE_LINE std::cout << __FILE__ << "(" << __LINE__ << "):\t" <<
+#define HGE_FILE_LINE std::cout << __FILE__ << "(" << __LINE__ << "):\t\t\t" <<
 #define HGE_TERRAIN_COMPONENT_COUNT 12
-#endif
+#endif // HGE_CONFIGURE_HPP

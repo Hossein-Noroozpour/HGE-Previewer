@@ -1,18 +1,44 @@
+#include "hge-configure.hpp"
 #include "hge-terrain-sun-shader.hpp"
 #include "hge-shader-engine.hpp"
 #include <iostream>
 #include <fstream>
 #include <string>
 #include <cassert>
-#define HGEPRINTCODELINE std::cout << "Debugging: file:" << __FILE__ << " line:" << __LINE__ << std::endl << std::flush;
-#define NUMBEROFBUFFERCOMPONENTS 12
 hge::shader::TerrainSunShader::TerrainSunShader():
 	shaderProgram(render::ShaderEngine::createProgram())
 {
-	//const std::string shLoc = "C:\\Users\\Thany\\Documents\\Visual Studio 2012\\Projects\\HGE\\x64\\Release\\shaders\\";
-	const std::string shLoc = "shaders/";
-	std::string pVS = readShaderFile(shLoc + "hge-terrain-shader-string.vertexShader");
-	std::string pGS = readShaderFile(shLoc + "hge-terrain-shader-string.geometryShader");
+	std::string pVS =
+		shaderLanguageVersion +
+		"layout(location=0)in vec3 vtx;" + shaderEndline +
+		//All of the normals must be normalized.
+		"layout(location=1)in vec3 nrm;" + shaderEndline +
+		//All of the tangents must be normalized.
+		"layout(location=2)in vec3 tan;" + shaderEndline +
+		//All of the bitangents must be normalized.
+		"layout(location=3)in vec3 btn;" + shaderEndline +
+		"out float " + lightIntensityVarName + ";" + shaderEndline +
+		"out vec3 " + vsWorldPositionOutVarName + ";" + shaderEndline +
+		"uniform mat4 " + modelViewProjectionMatrixUniformName + ";" + shaderEndline +
+		"uniform mat4 " + sunDirectionUniformName + ";" + shaderEndline +
+		"void main()" + shaderEndline +
+		"{" + shaderEndline +
+		lightIntensityVarName + "=float(max(float(dot(" + sunDirectionUniformName + ",nrm)),0.1));" + shaderEndline +
+		"gl_Position=" + modelMatrixUniformName + "*vec4(vtx,1.0);" + shaderEndline +
+		vsWorldPositionOutVarName + "=vtx;" + shaderEndline +
+		"}";
+#ifdef HGE_GEOMETRY_SHADER_SUPPORT
+	std::string pGS =
+		shaderLanguageVersion +
+		"layout(triangles)in;" + shaderEndline +
+		"layout(triangle_strip,max_vertices=3)out;" + shaderEndline +
+		"in gl_PerVertex" + shaderEndline +
+		"{" + shaderEndline +
+		"vec4 gl_Position;" + shaderEndline +
+		"vec3 ;" + shaderEndline +
+		"vec3 ;" + shaderEndline +
+		"}gl_in[];" + shaderEndline +
+#endif
 	std::string pFS = readShaderFile(shLoc + "hge-terrain-shader-string.fragmentShader");
 	vertexShaderProgram = render::ShaderEngine::addShaderToProgram(pVS, GL_VERTEX_SHADER, shaderProgram);
 #ifdef HGETERRAINSUNSHADERDEBUGMODE
