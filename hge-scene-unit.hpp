@@ -34,6 +34,7 @@ namespace hge
 			std::shared_ptr<GeometryUnit> getGeoByID(const core::Protocol::Types::IdType &id);
 			std::shared_ptr<math::CameraUnit> getCamera(const unsigned int& cameraIndex = 0);
 			std::shared_ptr<SkyBoxUnit> getSky(const unsigned int& skyIndex = 0);
+			std::shared_ptr<TerrainUnit> getTerrain();
 			static std::shared_ptr<shader::WhiteShader> occlusionQueryShader;
 			static std::shared_ptr<shader::SunShader> defaultShader;
 			static std::shared_ptr<texture::TextureUnit> defaultTexture;

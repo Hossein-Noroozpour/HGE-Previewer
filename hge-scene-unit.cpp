@@ -74,7 +74,7 @@ std::shared_ptr<hge::render::GeometryUnit> hge::render::SceneUnit::getGeoByID(co
 		}
 	}
 	std::cout << "Geo Not found!" << std::endl;
-	HGEPRINTCODELINE; 
+	HGEPRINTCODELINE;
 	return nullptr;
 }
 void hge::render::SceneUnit::setTerrain(const std::shared_ptr<TerrainUnit>& t)
@@ -94,4 +94,8 @@ void hge::render::SceneUnit::addSky(const std::shared_ptr<SkyBoxUnit> &sky)
 std::shared_ptr<hge::render::SkyBoxUnit> hge::render::SceneUnit::getSky(const unsigned int &skyIndex)
 {
 	return skies[skyIndex];
+}
+std::shared_ptr<hge::render::TerrainUnit> hge::render::SceneUnit::getTerrain()
+{
+	return terrain;
 }

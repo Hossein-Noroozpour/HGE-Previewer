@@ -4,6 +4,7 @@
 #include <thread>
 #include <mutex>
 #include <functional>
+#include <cmath>
 #ifdef _WIN32
 #define M_PI 3.1415926535897932384626433832795
 #endif
@@ -209,7 +210,7 @@ void hge::render::TerrainUnit::setData(std::istream &stream, const bool &endianC
 	std::cout << __FILE__ << "(" << __LINE__ << "): aspect is: " << aspect << std::endl;
 #endif
 #ifdef HGE_INTENSIVE_DEBUG_MODE
-	if (std::powf(2.f, std::floorf(std::log2f(aspect))) != float(aspect))
+	if (powf(2.f, floorf(log2f(aspect))) != float(aspect))
 	{
 		std::cerr << __FILE__ << ": Error: Terrain aspect is not a power of 2 number." << std::endl;
 		std::terminate();

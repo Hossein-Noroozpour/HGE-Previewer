@@ -1,11 +1,9 @@
 #ifndef HGETERRAINSUNSHADER_HPP
 #define	HGETERRAINSUNSHADER_HPP
+#include "hge-configure.hpp"
 #include "hge-math.hpp"
 #include "hge-shader-unit.hpp"
 #include <string>
-//#define HGETERRAINSUNSHADERDEBUGMODE
-#define HGETERRAINSUNSHADERNUMBEROFTEXTURES 8
-#define HGEPRINTCODELINE std::cout << "Debugging: file:" << __FILE__ << " line:" << __LINE__ << std::endl << std::flush;
 /*
  * \TODO must have a good initializing and removing
  * all program must be removed!!
@@ -32,7 +30,7 @@ namespace hge
 			GLuint geometryShaderProgram;
 			GLuint fragmentShaderProgram;
 			/// texture Sampler Location
-			GLuint tsl[HGETERRAINSUNSHADERNUMBEROFTEXTURES];
+			GLuint tsl[HGE_TERRAIN_TEXTURE_COUNT];
 		public:
 			///\note You must initialize OpenGL before call of this function.
 			TerrainSunShader();

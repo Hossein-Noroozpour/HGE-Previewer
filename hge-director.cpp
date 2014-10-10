@@ -33,11 +33,20 @@ void hge::core::Director::initialize()
 		std::shared_ptr<hge::shader::SunShader>(new hge::shader::SunShader());
 	render::SceneUnit::defaultTexture =
 		std::shared_ptr<hge::texture::TextureUnit>(new hge::texture::TextureUnit(GLenum(GL_TEXTURE_2D),
+#ifdef __unix__
+		std::string("/home/thany/Pictures/HGE-Logo1024x1024.png")));
+#else
 		std::string("C:\\Users\\Thany Hulixer\\Documents\\Visual Studio 2013\\Projects\\HGE-Previewer\\x64\\Debug\\HGE-Logo1024x1024.png")));
+#endif
 	render::SceneUnit::occlusionQueryShader =
 		std::shared_ptr<hge::shader::WhiteShader>(new hge::shader::WhiteShader());
 	/// end of testing part
+#ifdef __unix__
+	scene = ResourceManager::importScene("/home/thany/Programming/QtCreator/Files/hge-sample.hge");
+#else
 	scene = ResourceManager::importScene("C:\\Users\\Thany Hulixer\\Documents\\Projects\\HGE\\HGE-Builder\\hge-sample.hge");
+#endif
+	scene->getTerrain()->setShader(std::shared_ptr<shader::TerrainSunShader>(new shader::TerrainSunShader()));
 }
 void hge::core::Director::update()
 {

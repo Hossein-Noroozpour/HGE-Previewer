@@ -1,15 +1,18 @@
 #include "hge-shader-unit.hpp"
-const std::string hge::shader::ShaderUnit::shaderLanguageVersion =
 #ifdef HGE_USE_OPENGL_43
-"#version 430\n";
+const std::string hge::shader::ShaderUnit::shaderLanguageVersion("#version 430\n");
 #elif defined(HGE_USE_OPENGL_42)
-"#version 420\n";
+const std::string hge::shader::ShaderUnit::shaderLanguageVersion("#version 420\n");
 #elif defined(HGE_USE_OPENGL_41)
-"#version 410\n";
+const std::string hge::shader::ShaderUnit::shaderLanguageVersion("#version 410\n");
 #elif defined(HGE_USE_OPENGL_40)
-"#version 400\n";
+const std::string hge::shader::ShaderUnit::shaderLanguageVersion("#version 400\n");
 #elif defined(HGE_USE_OPENGL_33)
-"#version 330\n";
+const std::string hge::shader::ShaderUnit::shaderLanguageVersion("#version 330\n");
+#elif defined(HGE_USE_OPENGL_ES_3)
+const std::string hge::shader::ShaderUnit::shaderLanguageVersion("#version 430\n"); /// Not yet
+#elif defined(HGE_USE_OPENGL_ES_2)
+const std::string hge::shader::ShaderUnit::shaderLanguageVersion("#version 430\n"); /// Not yet
 #endif
 #ifdef HGE_DEBUG_MODE
 const std::string hge::shader::ShaderUnit::vsUvOutVarName("outUV");
@@ -19,6 +22,16 @@ const std::string hge::shader::ShaderUnit::modelViewProjectionMatrixUniformName(
 const std::string hge::shader::ShaderUnit::modelMatrixUniformName("modelMatrix");
 const std::string hge::shader::ShaderUnit::sunDirectionUniformName("sunDirection");
 const std::string hge::shader::ShaderUnit::shaderEndline("\n");
+const std::string hge::shader::ShaderUnit::shaderTabCharacter("\t");
+const std::string hge::shader::ShaderUnit::vertexAttribute("vertex");
+const std::string hge::shader::ShaderUnit::normalAttribute("normal");
+const std::string hge::shader::ShaderUnit::zAttribute("z");
+const std::string hge::shader::ShaderUnit::uvAttribute("uv");
+const std::string hge::shader::ShaderUnit::tangentAttribute("tangent");
+const std::string hge::shader::ShaderUnit::bitangentAttribute("bitangent");
+const std::string hge::shader::ShaderUnit::vertexInName("vertexIn");
+const std::string hge::shader::ShaderUnit::vertexOutName("vertexOut");
+const std::string hge::shader::ShaderUnit::textureSampler("textureSampler");
 #else
 const std::string hge::shader::ShaderUnit::vsUvOutVarName("ouv");
 const std::string hge::shader::ShaderUnit::vsWorldPositionOutVarName("wp");
@@ -27,6 +40,16 @@ const std::string hge::shader::ShaderUnit::modelViewProjectionMatrixUniformName(
 const std::string hge::shader::ShaderUnit::modelMatrixUniformName("m");
 const std::string hge::shader::ShaderUnit::sunDirectionUniformName("s");
 const std::string hge::shader::ShaderUnit::shaderEndline("");
+const std::string hge::shader::ShaderUnit::shaderTabCharacter("");
+const std::string hge::shader::ShaderUnit::vertexAttribute("v");
+const std::string hge::shader::ShaderUnit::normalAttribute("n");
+const std::string hge::shader::ShaderUnit::zAttribute("z");
+const std::string hge::shader::ShaderUnit::uvAttribute("uv");
+const std::string hge::shader::ShaderUnit::tangentAttribute("t");
+const std::string hge::shader::ShaderUnit::bitangentAttribute("bt");
+const std::string hge::shader::ShaderUnit::vertexInName("vi");
+const std::string hge::shader::ShaderUnit::vertexOutName("vo");
+const std::string hge::shader::ShaderUnit::textureSampler("ts");
 #endif
 //hge::shader::ShaderUnit::ShaderUnit():
 //shaderProgram(render::ShaderEngine::createProgram())

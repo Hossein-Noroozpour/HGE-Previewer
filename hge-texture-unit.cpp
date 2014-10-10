@@ -108,7 +108,7 @@ textureTarget(textureTarget)
 {
 	constructor(source);
 }
-hge::texture::TextureUnit::TextureUnit(const GLenum &textureTarget, std::string &fileAddress)
+hge::texture::TextureUnit::TextureUnit(const GLenum &textureTarget, const std::string &fileAddress)
 {
 	std::ifstream fileStream;
 	fileStream.open(fileAddress, std::ios_base::binary);

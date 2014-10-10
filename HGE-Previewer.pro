@@ -4,7 +4,8 @@ CONFIG -= app_bundle
 CONFIG -= qt
 
 QMAKE_CXXFLAGS += -std=c++11
-QMAKE_CXXFLAGS += -I ~/Libraries/GLFW3
+QMAKE_CXXFLAGS += -pthread -I ~/Libraries/GLFW3
+QMAKE_LIBS += -L ~/Libraries/GLFW3 -pthread -lglfw3 -lGL -lGLEW -lX11 -lXxf86vm -lpng -lXrandr -lXi
 
 SOURCES += \
 	hge-camera-unit.cpp \

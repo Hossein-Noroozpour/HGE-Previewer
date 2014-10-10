@@ -178,7 +178,7 @@ void hge::ui::HGEGLFWWindow::start(const std::shared_ptr<hge::core::ApplicationU
 	{
 		HGETERMINATE
 	}
-	glClearColor(0.2f, 0.2f, 0.2f, 0.0f);
+	glClearColor(1.f, 1.f, 1.f, 1.f);
 	glEnable(GL_CULL_FACE);
 	glEnable(GL_DEPTH_TEST);
 	//glEnable(GL_SCISSOR_TEST);
@@ -201,11 +201,11 @@ void hge::ui::HGEGLFWWindow::start(const std::shared_ptr<hge::core::ApplicationU
 	{
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
 		application->update();
-		glBegin(GL_TRIANGLES);
-		glVertex3f(0.f, 0.f, 0.f);
-		glVertex3f(10.f, 0.f, 0.f);
-		glVertex3f(10.f, 10.f, 0.f);
-		glEnd();
+//		glBegin(GL_TRIANGLES);
+//		glVertex3f(0.f, 0.f, 0.f);
+//		glVertex3f(10.f, 0.f, 0.f);
+//		glVertex3f(10.f, 10.f, 0.f);
+//		glEnd();
 		glFinish();
 		glfwSwapBuffers(window);
 		glfwPollEvents();
