@@ -29,7 +29,7 @@ hge::shader::WhiteShader::WhiteShader():
 	modelViewProjectionMatrixUniformLocation = render::ShaderEngine::getUniformLocation(std::string("mvp"), shaderProgram);
 	assert(modelViewProjectionMatrixUniformLocation != 0xFFFFFFFF);
 	math::Matrix4D<GLfloat> modelViewProjectionMatrix(1.0f);
-	glUniformMatrix4fv(modelViewProjectionMatrixUniformLocation, 1, GL_FALSE, modelViewProjectionMatrix.mat);
+	glUniformMatrix4fv(modelViewProjectionMatrixUniformLocation, 1, GL_TRUE, modelViewProjectionMatrix.mat);
 }
 hge::shader::WhiteShader::~WhiteShader()
 {
@@ -47,7 +47,7 @@ void hge::shader::WhiteShader::setModelMatrix(const math::Matrix4D<> &modelMatri
 }
 void hge::shader::WhiteShader::setModelViewProjectionMatrix(const math::Matrix4D<> &modelViewProjectionMatrix)
 {
-	glUniformMatrix4fv(modelViewProjectionMatrixUniformLocation, 1, GL_FALSE, modelViewProjectionMatrix.mat);
+	glUniformMatrix4fv(modelViewProjectionMatrixUniformLocation, 1, GL_TRUE, modelViewProjectionMatrix.mat);
 }
 void hge::shader::WhiteShader::setLODNumber(const GLuint& lodNumber)
 {

@@ -54,37 +54,71 @@ void hge::core::Director::initialize()
 
 	
 	us = std::shared_ptr<shader::UnlitShader>(new shader::UnlitShader);
-	float *v = new float[3*5];
+	ws = std::shared_ptr<shader::WhiteShader>(new shader::WhiteShader);
+	ss = std::shared_ptr<shader::SunShader>(new shader::SunShader);
+	float *v = new float[3*8];
 	GLuint *i = new GLuint[3];
 	v[0] = 0.0f;
 	v[1] = 0.0f;
 	v[2] = 0.0f;
 	v[3] = 0.0f;
 	v[4] = 0.0f;
-	//////////////
 	v[5] = 1.0f;
-	v[6] = 1.0f;
+	v[6] = 0.0f;
 	v[7] = 0.0f;
-	v[8] = 1.0f;
-	v[9] = 0.0f;
 	//////////////
-	v[10] = -1.0f;
-	v[11] = 1.0f;
+	v[8] = 1.0f;
+	v[9] = 1.0f;
+	v[10] = 0.0f;
+	v[11] = 0.0f;
 	v[12] = 0.0f;
-	v[13] = 0.0f;
+	v[13] = 1.0f;
 	v[14] = 1.0f;
+	v[15] = 0.0f;
+	//////////////
+	v[16] = -1.0f;
+	v[17] = 1.0f;
+	v[18] = 0.0f;
+	v[19] = 0.0f;
+	v[20] = 0.0f;
+	v[21] = 1.0f;
+	v[22] = 0.0f;
+	v[23] = 1.0f;
 	//////////////
 	i[0] = 0;
 	i[1] = 1;
 	i[2] = 2;
-	m = std::shared_ptr<render::MeshUnit>(new render::MeshUnit(v, i, 3 * 5 * sizeof(GLfloat), 3, 3 * sizeof(GLuint)));
+	m = std::shared_ptr<render::MeshUnit>(new render::MeshUnit(v, i, 3 * 8 * sizeof(GLfloat), 3, 3 * sizeof(GLuint)));
+	v = new float[3*3];
+	i = new GLuint[3];
+	v[0] = 0.0f;
+	v[1] = 0.0f;
+	v[2] = 0.0f;
+	//////////////
+	v[3] = 1.0f;
+	v[4] = 1.0f;
+	v[5] = 0.0f;
+	//////////////
+	v[6] = -1.0f;
+	v[7] = 1.0f;
+	v[8] = 0.0f;
+	//////////////
+	i[0] = 0;
+	i[1] = 1;
+	i[2] = 2;
+	std::shared_ptr<render::MeshUnit> om(new render::MeshUnit(v, i, 3 * 3 * sizeof(GLfloat), 3, 3 * sizeof(GLuint)));
 	tu = std::shared_ptr<hge::texture::TextureUnit>(new hge::texture::TextureUnit(
 #ifdef __unix__
 		std::string("/home/thany/Pictures/HGE-Logo1024x1024.png")));
 #else
-		std::string("C:\\Temporary\\Pictures\\Hulixerian\\texture-test-001.png")));
+		std::string("C:\\Temporary\\Pictures\\Hulixerian\\HGE-Logo1024x1024.png")));
 #endif
-	
+	gu = std::shared_ptr<render::GeometryUnit>(new render::GeometryUnit);
+	gu->setMesh(m);
+	gu->setOcclusionQueryMesh(om);
+	gu->setOcclusionQueryShader(ws);
+	gu->setShader(ss);
+	gu->setTexture(tu);
 }
 void hge::core::Director::update()
 {
@@ -137,15 +171,24 @@ void hge::core::Director::update()
 	{
 		c.moveSideward(-cameraMoveSpeed);
 	}
-	m->bindVBO();
+
+
+	/*m->bindVBO();
 	tu->bind(GL_TEXTURE0);
 	us->use();
 	glUniform1i(us->getTextureSamplerLocation(), 0);
 	auto mvp = (p.getMatrix() * c.getMatrix()) * mm.getConstRotateScaleTranslateMatrix();
 	us->setModelViewProjectionMatrix(mvp);
 	m->bindIBO();
-	m->draw();
+	m->draw();*/
 
+	auto vp = p.getMatrix() * c.getMatrix();
+	glColorMask(GL_FALSE, GL_FALSE, GL_FALSE, GL_FALSE);
+	glDepthMask(GL_FALSE);
+	gu->occlusionQueryStarter(vp);
+	glColorMask(GL_TRUE, GL_TRUE, GL_TRUE, GL_TRUE);
+	glDepthMask(GL_TRUE);
+	gu->draw();
 
 
 }

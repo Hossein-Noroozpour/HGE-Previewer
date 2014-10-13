@@ -35,8 +35,11 @@ namespace hge
 			math::PerspectiveUnit p;
 			math::ModelUnit mm;
 			std::shared_ptr<shader::UnlitShader> us;
+			std::shared_ptr<shader::WhiteShader> ws;
+			std::shared_ptr<shader::SunShader> ss;
 			std::shared_ptr<render::MeshUnit> m;
 			std::shared_ptr<texture::TextureUnit> tu;
+			std::shared_ptr<render::GeometryUnit> gu;
 		public:
 			Director();
 			~Director();
