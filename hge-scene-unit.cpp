@@ -22,8 +22,8 @@ void hge::render::SceneUnit::addGeometry(const std::shared_ptr<GeometryUnit>& ge
 #endif
 	geometry->setShader(defaultShader);
 	geometry->setTexture(defaultTexture);
-	geometry->getModelMatrix()->scale(10.0f);
-	geometry->getModelMatrix()->translate(math::Vector3D<>(0.0f, 0.0f, 0.0f));
+	//geometry->getModelMatrix()->scale(10.0f);
+	//geometry->getModelMatrix()->translate(math::Vector3D<>(0.0f, 0.0f, 0.0f));
 	geometries.push_back(geometry);
 }
 void

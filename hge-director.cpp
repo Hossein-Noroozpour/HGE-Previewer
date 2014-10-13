@@ -56,6 +56,10 @@ void hge::core::Director::initialize()
 	us = std::shared_ptr<shader::UnlitShader>(new shader::UnlitShader);
 	ws = std::shared_ptr<shader::WhiteShader>(new shader::WhiteShader);
 	ss = std::shared_ptr<shader::SunShader>(new shader::SunShader);
+	render::SceneUnit::defaultShader = ss;
+	render::SceneUnit::occlusionQueryShader = ws;
+
+
 	float *v = new float[3*8];
 	GLuint *i = new GLuint[3];
 	v[0] = 0.0f;
@@ -113,16 +117,18 @@ void hge::core::Director::initialize()
 #else
 		std::string("C:\\Temporary\\Pictures\\Hulixerian\\HGE-Logo1024x1024.png")));
 #endif
+	render::SceneUnit::defaultTexture = tu;
 	gu = std::shared_ptr<render::GeometryUnit>(new render::GeometryUnit);
 	gu->setMesh(m);
 	gu->setOcclusionQueryMesh(om);
-	gu->setOcclusionQueryShader(ws);
-	gu->setShader(ss);
-	gu->setTexture(tu);
+	scene = std::shared_ptr<render::SceneUnit>(new render::SceneUnit);
+	scene->addGeometry(gu);
+
 }
 void hge::core::Director::update()
 {
-	/*gldo_lock.lock();
+	
+	gldo_lock.lock();
 	for (auto f : gldo)
 	{
 		f();
@@ -154,7 +160,7 @@ void hge::core::Director::update()
 
 
 
-
+	/*
 	if (goForward)
 	{
 		c.moveForward(cameraMoveSpeed);
@@ -170,18 +176,22 @@ void hge::core::Director::update()
 	if (goLeftward)
 	{
 		c.moveSideward(-cameraMoveSpeed);
-	}
+	}*/
 
 
-	/*m->bindVBO();
+	/*
+	m->bindVBO();
 	tu->bind(GL_TEXTURE0);
 	us->use();
 	glUniform1i(us->getTextureSamplerLocation(), 0);
 	auto mvp = (p.getMatrix() * c.getMatrix()) * mm.getConstRotateScaleTranslateMatrix();
 	us->setModelViewProjectionMatrix(mvp);
 	m->bindIBO();
-	m->draw();*/
+	m->draw();
+	*/
 
+
+	/*
 	auto vp = p.getMatrix() * c.getMatrix();
 	glColorMask(GL_FALSE, GL_FALSE, GL_FALSE, GL_FALSE);
 	glDepthMask(GL_FALSE);
@@ -189,7 +199,7 @@ void hge::core::Director::update()
 	glColorMask(GL_TRUE, GL_TRUE, GL_TRUE, GL_TRUE);
 	glDepthMask(GL_TRUE);
 	gu->draw();
-
+	*/
 
 }
 void hge::core::Director::buttonPressed(const HGEButton& key)
@@ -261,12 +271,15 @@ void hge::core::Director::mouseMoved(const float &dx, const float &dy)
 	if (rotateOn)
 	{
 		//std::cout << "sdfssdfsfsdfsfsdfdsfs";
-		/*scene->getCamera()->rotateGlobalZ(dx * cameraRotationSpeed);
-		scene->getCamera()->rotateLocalX(dy * cameraRotationSpeed);*/
+		
+		scene->getCamera()->rotateGlobalZ(dx * cameraRotationSpeed);
+		scene->getCamera()->rotateLocalX(dy * cameraRotationSpeed);
 
 
-
+		/*
 		c.rotateGlobalZ(dx * cameraRotationSpeed);
 		c.rotateLocalX(dy * cameraRotationSpeed); 
+		*/
+
 	}
 }
