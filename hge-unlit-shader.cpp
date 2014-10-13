@@ -52,7 +52,7 @@ void hge::shader::UnlitShader::setModelMatrix(const math::Matrix4D<> &modelMatri
 }
 void hge::shader::UnlitShader::setModelViewProjectionMatrix(const math::Matrix4D<> &modelViewProjectionMatrix)
 {
-	glUniformMatrix4fv(modelViewProjectionMatrixUniformLocation, 1, GL_FALSE, modelViewProjectionMatrix.mat);
+	glUniformMatrix4fv(modelViewProjectionMatrixUniformLocation, 1, GL_TRUE, modelViewProjectionMatrix.mat);
 }
 void hge::shader::UnlitShader::setLODNumber(const GLuint& lodNumber)
 {
@@ -82,6 +82,7 @@ GLuint hge::shader::UnlitShader::getVertexShaderProgram()
 GLuint hge::shader::UnlitShader::getGeometryShaderProgram()
 {
 	HGE_FILE_LINE "Error this shader program does not have geometry shader." << std::endl;
+	return 0;
 }
 GLuint hge::shader::UnlitShader::getFragmentShaderProgram()
 {

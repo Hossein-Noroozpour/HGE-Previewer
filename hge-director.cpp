@@ -52,23 +52,39 @@ void hge::core::Director::initialize()
 
 
 
-
-	ws = std::shared_ptr<shader::WhiteShader>(new shader::WhiteShader);
-	float *v = new float[3*3];
+	
+	us = std::shared_ptr<shader::UnlitShader>(new shader::UnlitShader);
+	float *v = new float[3*5];
 	GLuint *i = new GLuint[3];
 	v[0] = 0.0f;
 	v[1] = 0.0f;
 	v[2] = 0.0f;
-	v[3] = 1.0f;
-	v[4] = 1.0f;
-	v[5] = 0.0f;
-	v[6] = -1.0f;
-	v[7] = 1.0f;
-	v[8] = 0.0f;
+	v[3] = 0.0f;
+	v[4] = 0.0f;
+	//////////////
+	v[5] = 1.0f;
+	v[6] = 1.0f;
+	v[7] = 0.0f;
+	v[8] = 1.0f;
+	v[9] = 0.0f;
+	//////////////
+	v[10] = -1.0f;
+	v[11] = 1.0f;
+	v[12] = 0.0f;
+	v[13] = 0.0f;
+	v[14] = 1.0f;
+	//////////////
 	i[0] = 0;
 	i[1] = 1;
 	i[2] = 2;
-	m = std::shared_ptr<render::MeshUnit>(new render::MeshUnit(v, i, 9 * sizeof(GLfloat), 3, 3 * sizeof(GLuint)));
+	m = std::shared_ptr<render::MeshUnit>(new render::MeshUnit(v, i, 3 * 5 * sizeof(GLfloat), 3, 3 * sizeof(GLuint)));
+	tu = std::shared_ptr<hge::texture::TextureUnit>(new hge::texture::TextureUnit(
+#ifdef __unix__
+		std::string("/home/thany/Pictures/HGE-Logo1024x1024.png")));
+#else
+		std::string("C:\\Temporary\\Pictures\\Hulixerian\\texture-test-001.png")));
+#endif
+	
 }
 void hge::core::Director::update()
 {
@@ -122,9 +138,11 @@ void hge::core::Director::update()
 		c.moveSideward(-cameraMoveSpeed);
 	}
 	m->bindVBO();
-	ws->use();
+	tu->bind(GL_TEXTURE0);
+	us->use();
+	glUniform1i(us->getTextureSamplerLocation(), 0);
 	auto mvp = (p.getMatrix() * c.getMatrix()) * mm.getConstRotateScaleTranslateMatrix();
-	ws->setModelViewProjectionMatrix(mvp);
+	us->setModelViewProjectionMatrix(mvp);
 	m->bindIBO();
 	m->draw();
 

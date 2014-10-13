@@ -2,6 +2,7 @@
 #define HGEDIRECTOR_HPP
 #include "hge-application-unit.hpp"
 #include "hge-scene-unit.hpp"
+#include "hge-unlit-shader.hpp"
 #include <functional>
 #include <mutex>
 namespace hge
@@ -33,8 +34,9 @@ namespace hge
 			math::CameraUnit c;
 			math::PerspectiveUnit p;
 			math::ModelUnit mm;
-			std::shared_ptr<shader::WhiteShader> ws;
+			std::shared_ptr<shader::UnlitShader> us;
 			std::shared_ptr<render::MeshUnit> m;
+			std::shared_ptr<texture::TextureUnit> tu;
 		public:
 			Director();
 			~Director();

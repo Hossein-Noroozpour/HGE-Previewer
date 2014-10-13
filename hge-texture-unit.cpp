@@ -1,4 +1,5 @@
 #include "hge-texture-unit.hpp"
+#include "hge-configure.hpp"
 #include <iostream>
 #include <fstream>
 #include <png.h>
@@ -84,31 +85,33 @@ void hge::texture::TextureUnit::constructor(std::istream &source)
 	}
 	png_read_image(pngPtr, rowPtrs);
 	glGenTextures(1, &textureObject);
-	glBindTexture(textureTarget, textureObject);
+	glBindTexture(GL_TEXTURE_2D, textureObject);
+#ifdef HGE_INTENSIVE_DEBUG_MODE
+	if (glGetError() == GL_INVALID_ENUM) std::terminate();
+#endif
+	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 	switch (channels)
 	{
 	case 4:
-		glTexImage2D(textureTarget, 0, GL_RGBA8, imgWidth, imgHeight, 0, GL_BGRA, GL_UNSIGNED_BYTE, (void*)data);
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, imgWidth, imgHeight, 0, GL_RGBA, GL_UNSIGNED_BYTE, (void*)data);
 		break;
 	case 3:
-		glTexImage2D(textureTarget, 0, GL_RGB8, imgWidth, imgHeight, 0, GL_BGR, GL_UNSIGNED_BYTE, (void*)data);
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, imgWidth, imgHeight, 0, GL_RGB, GL_UNSIGNED_BYTE, (void*)data);
 		break;
 	default:
 		break;
 	}
-	glTexParameterf(textureTarget, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-	glTexParameterf(textureTarget, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-	glGenerateMipmap(textureTarget);
+	glGenerateMipmap(GL_TEXTURE_2D);
 	delete[](png_bytep)rowPtrs;
 	png_destroy_read_struct(&pngPtr, &infoPtr, (png_infopp)0);
 	delete[] data;
 }
-hge::texture::TextureUnit::TextureUnit(const GLenum &textureTarget, std::istream &source):
-textureTarget(textureTarget)
+hge::texture::TextureUnit::TextureUnit(std::istream &source)
 {
 	constructor(source);
 }
-hge::texture::TextureUnit::TextureUnit(const GLenum &textureTarget, const std::string &fileAddress)
+hge::texture::TextureUnit::TextureUnit(const std::string &fileAddress)
 {
 	std::ifstream fileStream;
 	fileStream.open(fileAddress, std::ios_base::binary);
@@ -133,5 +136,5 @@ bool hge::texture::TextureUnit::validate(std::istream &source)
 void hge::texture::TextureUnit::bind(const GLenum &textureUnit)
 {
 	glActiveTexture(textureUnit);
-	glBindTexture(textureTarget, textureObject);
+	glBindTexture(GL_TEXTURE_2D, textureObject);
 }

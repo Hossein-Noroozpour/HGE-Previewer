@@ -28,8 +28,8 @@ namespace hge
 				InformationError,
 				ParsingError
 			};
-			TextureUnit(const GLenum &TextureTarget, std::istream &source);
-			TextureUnit(const GLenum &TextureTarget, const std::string &fileAddress);
+			TextureUnit(std::istream &source);
+			TextureUnit(const std::string &fileAddress);
 			bool validate(std::istream &source);
 			void bind(const GLenum &TextureUnit);
 		private:
