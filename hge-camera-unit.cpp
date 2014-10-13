@@ -7,8 +7,8 @@ namespace hge
 			cmrX(Vector3D<>(1.0f, 0.0f, 0.0f)),
 			cmrY(Vector3D<>(0.0f, 1.0f, 0.0f)),
 			cmrZ(Vector3D<>::cross(cmrX, cmrY)),
-			cmrLoc(Vector3D<>(0.0f, 0.0f, 100.0f)),
-			viewM(Matrix4D<>::lookAt(Vector3D<>(0.0f, 0.0f, 100.0f), Vector3D<>(0.0f, 0.0f, 0.0f), Vector3D<>(0.0f, 1.0f, 0.0f))),
+			cmrLoc(Vector3D<>(0.0f, 0.0f, 50.0f)),
+			viewM(Matrix4D<>::lookAt(Vector3D<>(0.0f, 0.0f, 50.0f), Vector3D<>(0.0f, 0.0f, 0.0f), Vector3D<>(0.0f, 1.0f, 0.0f))),
 			rotsclM(Matrix4D<>(1.0f))
 		{
 		}
@@ -166,8 +166,8 @@ namespace hge
 		void CameraUnit::moveSideward(const float& spd)
 		{
 			Vector3D<> vec = cmrX * spd;
-			cmrLoc += vec;
-			viewM = viewM * Matrix4D<>::translate(-vec);
+			cmrLoc -= vec;
+			viewM = Matrix4D<>::translate(vec) * viewM;
 		}
 	}
 }

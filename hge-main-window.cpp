@@ -178,12 +178,12 @@ void hge::ui::HGEGLFWWindow::start(const std::shared_ptr<hge::core::ApplicationU
 	{
 		HGETERMINATE
 	}
-	glClearColor(1.f, 1.f, 1.f, 1.f);
+	glClearColor(0.f, 0.f, 0.f, 0.f);
 	glEnable(GL_CULL_FACE);
 	glEnable(GL_DEPTH_TEST);
-	//glEnable(GL_SCISSOR_TEST);
-	//glEnable(GL_STENCIL_TEST);
-	//glEnable(GL_ALPHA_TEST);
+	glEnable(GL_SCISSOR_TEST);
+	glEnable(GL_STENCIL_TEST);
+	glEnable(GL_ALPHA_TEST);
 	glfwSetKeyCallback(window, onKeyEvent);
 	glfwSetMouseButtonCallback(window, onMouseKeyEvent);
 	glfwSetCursorPosCallback(window, onCursorMoveEvent);

@@ -22,6 +22,19 @@ namespace hge
 			bool wireframeMode;
 			float cameraRotationSpeed;
 			float cameraMoveSpeed;
+
+
+
+
+
+
+
+
+			math::CameraUnit c;
+			math::PerspectiveUnit p;
+			math::ModelUnit mm;
+			std::shared_ptr<shader::WhiteShader> ws;
+			std::shared_ptr<render::MeshUnit> m;
 		public:
 			Director();
 			~Director();

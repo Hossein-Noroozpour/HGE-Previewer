@@ -28,6 +28,8 @@ hge::shader::WhiteShader::WhiteShader():
 	hge::render::ShaderEngine::run(shaderProgram);
 	modelViewProjectionMatrixUniformLocation = render::ShaderEngine::getUniformLocation(std::string("mvp"), shaderProgram);
 	assert(modelViewProjectionMatrixUniformLocation != 0xFFFFFFFF);
+	math::Matrix4D<GLfloat> modelViewProjectionMatrix(1.0f);
+	glUniformMatrix4fv(modelViewProjectionMatrixUniformLocation, 1, GL_FALSE, modelViewProjectionMatrix.mat);
 }
 hge::shader::WhiteShader::~WhiteShader()
 {
@@ -38,9 +40,10 @@ hge::shader::WhiteShader::~WhiteShader()
 void hge::shader::WhiteShader::setModelMatrix(const math::Matrix4D<> &modelMatrix)
 {
 	(void) modelMatrix;
-	std::cerr << "Error this shader does not have model matrix." << std::endl;
-	HGEPRINTCODELINE
-	std::terminate();
+	/// for testing.
+	//std::cerr << "Error this shader does not have model matrix." << std::endl;
+	//HGEPRINTCODELINE
+	//std::terminate();
 }
 void hge::shader::WhiteShader::setModelViewProjectionMatrix(const math::Matrix4D<> &modelViewProjectionMatrix)
 {
