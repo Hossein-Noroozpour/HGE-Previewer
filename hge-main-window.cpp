@@ -150,6 +150,7 @@ void hge::ui::HGEGLFWWindow::onCursorMoveEvent(GLFWwindow* window, double x, dou
 void hge::ui::HGEGLFWWindow::onChangeSizeEvent(GLFWwindow* window, int width, int height)
 {
 	glViewport(0, 0, width, height);
+	glScissor(0, 0, width, height);
 }
 void hge::ui::HGEGLFWWindow::start(const std::shared_ptr<hge::core::ApplicationUnit>& app)
 {
@@ -189,6 +190,7 @@ void hge::ui::HGEGLFWWindow::start(const std::shared_ptr<hge::core::ApplicationU
 	glfwSetCursorPosCallback(window, onCursorMoveEvent);
 #ifdef HGE_TEST_MODE
 	glViewport(0, 0, 740, 490);
+	glScissor(0, 0, 740, 490);
 #else
 	glViewport(0, 0, vidMod->width, vidMod->height);
 #endif

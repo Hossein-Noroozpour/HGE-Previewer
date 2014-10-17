@@ -180,6 +180,7 @@ void hge::render::MeshUnit::setData(std::istream &stream, const bool &endianComp
 	glGenBuffers(1, &ibo);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ibo);
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER, indicesCount * sizeof(GLuint), indices, GL_STATIC_DRAW);
+	numberOfIndices = indicesCount;
 	delete[] vertices;
 	delete[] indices;
 }

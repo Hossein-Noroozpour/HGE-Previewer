@@ -110,17 +110,17 @@ void hge::render::GeometryUnit::setData(std::istream &stream, const bool &endian
 {
 #define HGE_READ_BTYPE(t) stream.read((char *)(&t), sizeof t);if (!endianCompatible) swapObject((char *)(&t), sizeof t)
 #ifdef HGE_TEST_MODE
-#define HGE_TEST_FORMAT if (stream.eof()) { std::cerr << __FILE__ << ": Format error!" << std::endl; HGE_PRINT_CODE_LINE; }
+#define HGE_TEST_FORMAT if(stream.eof()){HGE_FILE_LINE ": Format error!" << std::endl;}
 #define HGE_READ_STRING(s)\
 	{\
 		core::Protocol::Types::StringLengthType len;\
 		HGE_READ_BTYPE(len);\
-		std::cout << __FILE__ << ": String length: " << len << std::endl;\
+		HGE_FILE_LINE ": String length: " << len << std::endl;\
 		char *str = new char[len + 1];\
 		stream.read(str, len);\
 		str[len] = 0;\
 		s = std::string(str, len);\
-		std::cout << __FILE__ << ": String is: " << str << std::endl;\
+		HGE_FILE_LINE ": String is: " << str << std::endl;\
 		delete [] str;\
 	}
 #else
@@ -148,7 +148,7 @@ void hge::render::GeometryUnit::setData(std::istream &stream, const bool &endian
 	/// ID
 	HGE_READ_BTYPE(id);
 #ifdef HGE_TEST_MODE
-	std::cout << __FILE__ << ": ID number is: " << id << std::endl;
+	HGE_FILE_LINE ": ID number is: " << id << std::endl;
 #endif
 	/// Mesh
 	mesh = std::shared_ptr<MeshUnit>(new MeshUnit());
@@ -162,6 +162,9 @@ void hge::render::GeometryUnit::setData(std::istream &stream, const bool &endian
 	HGE_READ_BTYPE(hasOcc);
 	if (core::Protocol::Values::HgeTrue == hasOcc)
 	{
+#ifdef HGE_VERBOSE_TEST_MODE
+		HGE_FILE_LINE "Has occlusion query mesh." << std::endl;
+#endif
 		occlusionQueryMesh = std::shared_ptr<MeshUnit>(new MeshUnit());
 		occlusionQueryMesh->setData(stream, endianCompatible);
 		HGE_TEST_FORMAT;

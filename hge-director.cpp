@@ -28,12 +28,12 @@ void hge::core::Director::start()
 }
 void hge::core::Director::initialize()
 {
-	/*
+	
 	/// testing part
 	render::SceneUnit::defaultShader =
 		std::shared_ptr<hge::shader::SunShader>(new hge::shader::SunShader());
 	render::SceneUnit::defaultTexture =
-		std::shared_ptr<hge::texture::TextureUnit>(new hge::texture::TextureUnit(GLenum(GL_TEXTURE_2D),
+		std::shared_ptr<hge::texture::TextureUnit>(new hge::texture::TextureUnit(
 #ifdef __unix__
 		std::string("/home/thany/Pictures/HGE-Logo1024x1024.png")));
 #else
@@ -47,12 +47,11 @@ void hge::core::Director::initialize()
 #else
 	scene = ResourceManager::importScene("C:\\Users\\Thany Hulixer\\Documents\\Projects\\HGE\\HGE-Builder\\hge-sample.hge");
 #endif
-	scene->getTerrain()->setShader(std::shared_ptr<shader::TerrainSunShader>(new shader::TerrainSunShader()));*/
 
 
 
 
-	
+	/*
 	us = std::shared_ptr<shader::UnlitShader>(new shader::UnlitShader);
 	ws = std::shared_ptr<shader::WhiteShader>(new shader::WhiteShader);
 	ss = std::shared_ptr<shader::SunShader>(new shader::SunShader);
@@ -123,7 +122,7 @@ void hge::core::Director::initialize()
 	gu->setOcclusionQueryMesh(om);
 	scene = std::shared_ptr<render::SceneUnit>(new render::SceneUnit);
 	scene->addGeometry(gu);
-
+	*/
 }
 void hge::core::Director::update()
 {

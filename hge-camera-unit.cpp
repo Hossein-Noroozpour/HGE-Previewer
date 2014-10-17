@@ -167,7 +167,7 @@ namespace hge
 		{
 			Vector3D<> vec = cmrX * spd;
 			cmrLoc -= vec;
-			viewM = Matrix4D<>::translate(vec) * viewM;
+			viewM = viewM * Matrix4D<>::translate(vec);
 		}
 	}
 }

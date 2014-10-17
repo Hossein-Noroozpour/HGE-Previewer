@@ -41,6 +41,7 @@
 //		(1.0 - file_size(outfilename)*1.0 / total_read)*100.0);
 //}
 #include "hge-resource-manager.hpp"
+#include "hge-terrain-unlit-shader.hpp"
 #include <fstream>
 std::shared_ptr<hge::render::SceneUnit> hge::core::ResourceManager::importScene(std::istream &stream)
 {
@@ -86,7 +87,8 @@ std::shared_ptr<hge::render::SceneUnit> hge::core::ResourceManager::importScene(
 #endif
 			std::shared_ptr<render::TerrainUnit> terrain(new render::TerrainUnit());
 			terrain->setData(stream, endianCompatible);
-			//terrain->setShader(new shader::)
+			terrain->setShader(std::shared_ptr<shader::TerrainUnlitShader>(new shader::TerrainUnlitShader()));
+			terrain->addTexture(render::SceneUnit::defaultTexture);
 			result->setTerrain(terrain);
 			break;
 		}

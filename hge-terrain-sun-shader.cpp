@@ -164,10 +164,10 @@ hge::shader::TerrainSunShader::TerrainSunShader():
 					HGE_3tab "fragColor = tmpcolor;"
 				HGE_2tab "}"
 			HGE_1tab "}"
-			HGE_1tab "if(" + HGE_V_I_nrm + ".z > -200000)"
+			/*HGE_1tab "if(" + HGE_V_I_nrm + ".z > -200000)"
 			HGE_1tab "{"
-				HGE_2tab "fragColor = vec4(0.0);"
-			HGE_1tab "}" + shaderEndline +
+				HGE_2tab "fragColor = vec4(0.5);"
+			HGE_1tab "}"*/ + shaderEndline +
 			"}";
 
 #ifdef HGE_TEST_MODE
@@ -199,7 +199,7 @@ hge::shader::TerrainSunShader::TerrainSunShader():
 #ifdef HGE_DEBUG_MODE
 	assert(mvpmul != 0xFFFFFFFF);
 #endif
-	glUniformMatrix4fv(mvpmul, 1, GL_FALSE, math::Matrix4D<>(1.0f).mat);
+	glUniformMatrix4fv(mvpmul, 1, GL_TRUE, math::Matrix4D<>(1.0f).mat);
 	/// \todo
 //	cprtmul = render::ShaderEngine::getUniformLocation(std::string("cprtm"), shaderProgram);
 //#ifdef HGE_DEBUG_MODE
@@ -229,11 +229,11 @@ hge::shader::TerrainSunShader::~TerrainSunShader()
 }
 void hge::shader::TerrainSunShader::setModelMatrix(const math::Matrix4D<> &modelMatrix)
 {
-	glUniformMatrix4fv(mmul, 1, GL_FALSE, modelMatrix.mat);
+	glUniformMatrix4fv(mmul, 1, GL_TRUE, modelMatrix.mat);
 }
 void hge::shader::TerrainSunShader::setModelViewProjectionMatrix(const math::Matrix4D<> &modelViewProjectionMatrix)
 {
-	glUniformMatrix4fv(mvpmul, 1, GL_FALSE, modelViewProjectionMatrix.mat);
+	glUniformMatrix4fv(mvpmul, 1, GL_TRUE, modelViewProjectionMatrix.mat);
 }
 void hge::shader::TerrainSunShader::setCameraPositionRelativeToModel(const math::Vector3D<>& p)
 {
@@ -241,7 +241,7 @@ void hge::shader::TerrainSunShader::setCameraPositionRelativeToModel(const math:
 }
 void hge::shader::TerrainSunShader::setLODNumber(const GLuint& lodNumber)
 {
-	glUniform1i(lodnul, lodNumber);
+	//glUniform1i(lodnul, lodNumber);
 }
 void hge::shader::TerrainSunShader::use()
 {

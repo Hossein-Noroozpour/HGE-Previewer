@@ -165,7 +165,7 @@ void hge::render::TerrainUnit::draw(const math::Matrix4D<> &vp)
 	{
 		textures[i]->bind(GL_TEXTURE0 + i);
 	}
-	shader->setModelViewProjectionMatrix(vp * modelMatrix.getConstRotateScaleTranslateMatrix());
+	shader->setModelViewProjectionMatrix(vp);
 	for (unsigned int i = 0; i < iboBuffers.size(); i++)
 	{
 		shader->setLODNumber(i);
@@ -203,16 +203,16 @@ hge::math::ModelUnit *hge::render::TerrainUnit::getModelMatrix()
 void hge::render::TerrainUnit::setData(std::istream &stream, const bool &endianCompatible)
 {
 #define HGE_READ_BTYPE(t) stream.read((char *)(&t), sizeof t);if (!endianCompatible) swapObject((char *)(&t), sizeof t)
-#define HGE_TEST_FORMAT if (stream.eof()) { std::cerr << __FILE__ << ": Format error!" << std::endl;}
+#define HGE_TEST_FORMAT if (stream.eof()) { HGE_FILE_LINE "Format error!" << std::endl;}
 	core::Protocol::Types::TerrainAspectType aspect;
 	HGE_READ_BTYPE(aspect);
 #ifdef HGE_TEST_MODE
-	std::cout << __FILE__ << "(" << __LINE__ << "): aspect is: " << aspect << std::endl;
+	HGE_FILE_LINE "Aspect is: " << aspect << std::endl;
 #endif
 #ifdef HGE_INTENSIVE_DEBUG_MODE
 	if (powf(2.f, floorf(log2f(aspect))) != float(aspect))
 	{
-		std::cerr << __FILE__ << ": Error: Terrain aspect is not a power of 2 number." << std::endl;
+		HGE_FILE_LINE "Error: Terrain aspect is not a power of 2 number." << std::endl;
 		std::terminate();
 	}
 	HGE_TEST_FORMAT;
@@ -221,7 +221,7 @@ void hge::render::TerrainUnit::setData(std::istream &stream, const bool &endianC
 #ifdef HGE_INTENSIVE_DEBUG_MODE
 	if (id < 8)
 	{
-		std::cerr << __FILE__ << ": Error: Terrain ID is less than 8 this means its exporter part doesn't work very well." << std::endl;
+		HGE_FILE_LINE "Error: Terrain ID is less than 8 this means its exporter part doesn't work very well." << std::endl;
 	}
 	HGE_TEST_FORMAT;
 #endif
@@ -231,7 +231,7 @@ void hge::render::TerrainUnit::setData(std::istream &stream, const bool &endianC
 	if (HGE_TERRAIN_COMPONENT_COUNT != vbo_com_cnt)
 	{
 		/// \todo Add support for different VBO component count.
-		std::cerr << __FILE__ << ": Error: Terrain VBO component is not equal to imported terrain." << std::endl;
+		HGE_FILE_LINE "Error: Terrain VBO component is not equal to imported terrain." << std::endl;
 		std::terminate();
 	}
 	HGE_TEST_FORMAT;
